@@ -16,6 +16,7 @@ use lucene_query_builder::QueryBuilder;
 /// Variants are derived from the `work_type` table in the MusicBrainz database.
 #[non_exhaustive]
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(from = "String")]
 pub enum WorkType {
     /// Corresponds to the "Song" work type.
     /// Description from MusicBrainz:
@@ -402,6 +403,7 @@ pub enum WorkAttribute {
 /// Musical Keys are found as possible allowed values for work attribute types in `work_attribute_type_allowed_value`.  
 #[non_exhaustive]
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[serde(from = "String")]
 pub enum MusicalKey {
     CFlatMajor,
     CFlatMinor,
