@@ -52,6 +52,7 @@ pub enum WorkType {
     /// Corresponds to the "Incidental music" work type.
     /// Description from MusicBrainz:
     /// > Incidental music is music written as background for (usually) a theatre play.
+    #[serde(rename = "Incidental music")]
     IncidentalMusic,
     /// Corresponds to the "Madrigal" work type.
     /// Description from MusicBrainz:
