@@ -1,31 +1,36 @@
 # ![MusicBrainz] Rust &emsp;
 
-[![Latest Version]][crates.io] [![Build Status]][Action] [![codecov](https://codecov.io/gh/oknozor/musicbrainz_rs/branch/master/graph/badge.svg)](https://codecov.io/gh/oknozor/musicbrainz_rs) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/oknozor/musicbrainz_rs) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) ![License](https://img.shields.io/github/license/oknozor/musicbrainz_rs)
+[![Latest Version]][crates.io] [![Build Status]][Action] [![codecov](https://codecov.io/gh/oknozor/musicbrainz_rs/branch/master/graph/badge.svg)](https://codecov.io/gh/oknozor/musicbrainz_rs) ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/RustyNova016/musicbrainz_rs) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) ![License](https://img.shields.io/github/license/RustyNova016/musicbrainz_rs)
 
-[Build Status]: https://github.com/oknozor/musicbrainz_rs/actions/workflows/CI.yaml/badge.svg
-[Action]: https://github.com/oknozor/musicbrainz_rs/actions/workflows/CI.yaml
-[Latest Version]: https://img.shields.io/crates/v/musicbrainz_rs.svg
-[crates.io]: https://www.crates.io/crates/musicbrainz_rs
+[Build Status]: https://github.com/RustyNova016/musicbrainz_rs/actions/workflows/CI.yaml/badge.svg
+[Action]: https://github.com/RustyNova016/musicbrainz_rs/actions/workflows/CI.yaml
+[Latest Version]: https://img.shields.io/crates/v/musicbrainz_rs_nova.svg
+[crates.io]: https://www.crates.io/crates/musicbrainz_rs_nova
 [MusicBrainz]: https://staticbrainz.org/MB/header-logo-791fb3f.svg
 
 **MusicBrainz rust is a utility crate for the the [MusicBrainz API](https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2).**
 
+>This is a fork of [musicbrainz_rs](https://github.com/oknozor/musicbrainz_rs) crate, as it is currently seemingly unmaintained. While this crate is mostly meant as a temporary fix for [another project](https://github.com/RustyNova016/listenbrainz-cli-tools), this crate can be used instead of the original.
+
 ---
 
 you may be looking for :
+
 - [Api documention](https://docs.rs/musicbrainz_rs)
 - [The crate](https://www.crates.io/crates/musicbrainz_rs)
 
 ## Usage
 
-You can choose to use either the default async client or a blocking one. 
+You can choose to use either the default async client or a blocking one.
 
 **async client:**
+
 ```toml
 musicbrainz_rs = "0.5.0"
 ```
 
 **blocking client:**
+
 ```toml
 musicbrainz_rs = { version = "0.5.0", features = ["blocking"] }
 ```
@@ -198,6 +203,7 @@ fn main() {
 ```
 
 ### Custom user agent
+
 You can set your application user-agent as recommended in the
 [musicbrainz documentation](https://musicbrainz.org/doc/XML_Web_Service/Rate_Limiting#User-Agent) :
 
@@ -226,7 +232,7 @@ You can run examples with `cargo run --example example_name`
 
 All contributions are welcome, if find a bug or have a feature request don't hesitate to open an issue!
 
-#### Credits
+## Credits
 
 Most of this crate documentation is taken from the official [MusicBrainz doc](https://musicbrainz.org/doc/MusicBrainz_Documentation),
 thanks to the [MetaBrainz](https://metabrainz.org/) Foundation and its sponsors and supporters.
