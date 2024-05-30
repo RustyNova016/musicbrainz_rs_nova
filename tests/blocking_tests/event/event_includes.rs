@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::event::Event;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::event::Event;
+use musicbrainz_rs_nova::prelude::*;
 
 #[test]
 fn should_get_event_tags() {

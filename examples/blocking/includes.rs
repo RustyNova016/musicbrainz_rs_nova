@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::label::*;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::label::*;
+use musicbrainz_rs_nova::prelude::*;
 
 fn main() {
     let ninja_tune = Label::fetch()

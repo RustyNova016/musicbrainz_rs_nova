@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::place::*;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::place::*;
+use musicbrainz_rs_nova::prelude::*;
 
 #[test]
 fn should_get_place_aliases() {

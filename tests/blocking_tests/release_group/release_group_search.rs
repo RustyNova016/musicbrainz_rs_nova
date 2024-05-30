@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::release_group::*;
-use musicbrainz_rs::Search;
+use musicbrainz_rs_nova::entity::release_group::*;
+use musicbrainz_rs_nova::Search;
 
 #[test]
 fn should_search_artist() {

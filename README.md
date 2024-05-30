@@ -45,9 +45,9 @@ To perform a [lookups](https://musicbrainz.org/doc/Development/XML_Web_Service/V
 you need to import the `Fetch` trait. This can be done using `musicbrainz_rs::prelude`
 
 ```rust
-use musicbrainz_rs::entity::artist;
-use musicbrainz_rs::entity::artist::*;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::artist;
+use musicbrainz_rs_nova::entity::artist::*;
+use musicbrainz_rs_nova::prelude::*;
 
 fn main() {
     let nirvana = Artist::fetch()
@@ -65,8 +65,8 @@ You can also use includes to get more detail about a resource :
 Every Musicbrainz resource has [allowed include parameters](https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2#Subqueries).
 
 ```rust
-use musicbrainz_rs::entity::label::*;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::label::*;
+use musicbrainz_rs_nova::prelude::*;
 
 fn main() {
     let ninja_tune = Label::fetch()
@@ -91,10 +91,10 @@ fn main() {
 `Release` and `ReleaseGroup` entities in MusicBrainz also allow you to make CoverArt queries on them:
 
 ```rust
-use musicbrainz_rs::entity::release::*;
-use musicbrainz_rs::entity::CoverartResponse;
-use musicbrainz_rs::prelude::*;
-use musicbrainz_rs::FetchCoverart;
+use musicbrainz_rs_nova::entity::release::*;
+use musicbrainz_rs_nova::entity::CoverartResponse;
+use musicbrainz_rs_nova::prelude::*;
+use musicbrainz_rs_nova::FetchCoverart;
 
 fn main() {
     // CoverArt Query for a Release.
@@ -157,9 +157,9 @@ Use `musicbrainz_rs::Browse` or bring it in scope using `musicbrainz_rs::prelude
 Just like `Include` every muscibrainz resource has allowable linked entities for such queries.
 
 ```rust
-use musicbrainz_rs::entity::artist;
-use musicbrainz_rs::entity::artist::Artist;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::artist;
+use musicbrainz_rs_nova::entity::artist::Artist;
+use musicbrainz_rs_nova::prelude::*;
 
 fn main() {
     let artists_on_in_utero_release = Artist::browse()
@@ -180,8 +180,8 @@ fn main() {
 Use `musicbrainz_rs::Search` to perform a [search query](https://musicbrainz.org/doc/MusicBrainz_API/Search).
 
 ```rust
-use musicbrainz_rs::entity::artist::Artist;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::artist::Artist;
+use musicbrainz_rs_nova::prelude::*;
 
 fn main() {
     musicbrainz_rs::config::set_user_agent("my_awesome_app/1.0");
@@ -208,8 +208,8 @@ You can set your application user-agent as recommended in the
 [musicbrainz documentation](https://musicbrainz.org/doc/XML_Web_Service/Rate_Limiting#User-Agent) :
 
 ```rust
-use musicbrainz_rs::entity::artist::Artist;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::artist::Artist;
+use musicbrainz_rs_nova::prelude::*;
 
 fn main() {
     musicbrainz_rs::config::set_user_agent("my_awesome_app/1.0");

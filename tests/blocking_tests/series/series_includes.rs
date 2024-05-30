@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::series::Series;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::series::Series;
+use musicbrainz_rs_nova::prelude::*;
 
 #[test]
 fn should_get_series_tags() {

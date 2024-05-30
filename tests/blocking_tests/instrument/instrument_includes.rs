@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::instrument::Instrument;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::instrument::Instrument;
+use musicbrainz_rs_nova::prelude::*;
 
 #[test]
 fn should_get_instrument_tags() {
