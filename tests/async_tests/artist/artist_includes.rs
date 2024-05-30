@@ -213,7 +213,7 @@ async fn should_get_artist_tags() {
         .tags
         .unwrap()
         .iter()
-        .any(|tag| tag.name == "chicago blues"));
+        .any(|tag| tag.name == "detroit blues"));
 }
 
 #[tokio::test]
