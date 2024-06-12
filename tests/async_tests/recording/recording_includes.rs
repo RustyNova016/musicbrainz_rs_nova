@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::recording::*;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::recording::*;
+use musicbrainz_rs_nova::prelude::*;
 
 #[tokio::test]
 async fn should_get_recording_artists() {

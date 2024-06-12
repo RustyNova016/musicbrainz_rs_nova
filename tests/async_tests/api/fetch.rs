@@ -1,25 +1,25 @@
 use chrono::NaiveDate;
 use std::collections::HashMap;
 
-use musicbrainz_rs::entity::area::AreaType::*;
-use musicbrainz_rs::entity::area::*;
-use musicbrainz_rs::entity::artist::ArtistType::*;
-use musicbrainz_rs::entity::artist::*;
-use musicbrainz_rs::entity::event::{Event, EventType};
-use musicbrainz_rs::entity::instrument::InstrumentType::*;
-use musicbrainz_rs::entity::instrument::*;
-use musicbrainz_rs::entity::label::*;
-use musicbrainz_rs::entity::lifespan::*;
-use musicbrainz_rs::entity::place::PlaceType::*;
-use musicbrainz_rs::entity::place::*;
-use musicbrainz_rs::entity::recording::Recording;
-use musicbrainz_rs::entity::relations::*;
-use musicbrainz_rs::entity::release::*;
-use musicbrainz_rs::entity::release_group::*;
-use musicbrainz_rs::entity::series::*;
-use musicbrainz_rs::entity::url::*;
-use musicbrainz_rs::entity::work::*;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::area::AreaType::*;
+use musicbrainz_rs_nova::entity::area::*;
+use musicbrainz_rs_nova::entity::artist::ArtistType::*;
+use musicbrainz_rs_nova::entity::artist::*;
+use musicbrainz_rs_nova::entity::event::{Event, EventType};
+use musicbrainz_rs_nova::entity::instrument::InstrumentType::*;
+use musicbrainz_rs_nova::entity::instrument::*;
+use musicbrainz_rs_nova::entity::label::*;
+use musicbrainz_rs_nova::entity::lifespan::*;
+use musicbrainz_rs_nova::entity::place::PlaceType::*;
+use musicbrainz_rs_nova::entity::place::*;
+use musicbrainz_rs_nova::entity::recording::Recording;
+use musicbrainz_rs_nova::entity::relations::*;
+use musicbrainz_rs_nova::entity::release::*;
+use musicbrainz_rs_nova::entity::release_group::*;
+use musicbrainz_rs_nova::entity::series::*;
+use musicbrainz_rs_nova::entity::url::*;
+use musicbrainz_rs_nova::entity::work::*;
+use musicbrainz_rs_nova::prelude::*;
 
 #[tokio::test]
 async fn should_get_artist_by_id() {
@@ -34,7 +34,7 @@ async fn should_get_artist_by_id() {
             id: String::from("5b11f4ce-a62d-471e-81fc-a69a8278c7da"),
             name: String::from("Nirvana"),
             sort_name: String::from("Nirvana"),
-            disambiguation: String::from("90s US grunge band"),
+            disambiguation: String::from("1980s~1990s US grunge band"),
             artist_type: Some(Group),
             gender: None,
             country: Some("US".to_string()),
@@ -53,24 +53,10 @@ async fn should_get_artist_by_id() {
                 genres: None,
                 annotation: None,
             }),
-            begin_area: Some(Area {
-                id: "a640b45c-c173-49b1-8030-973603e895b5".to_string(),
-                area_type: None,
-                type_id: None,
-                disambiguation: "".to_string(),
-                name: "Aberdeen".to_string(),
-                sort_name: "Aberdeen".to_string(),
-                relations: None,
-                iso_3166_1_codes: None,
-                life_span: None,
-                tags: None,
-                aliases: None,
-                genres: None,
-                annotation: None,
-            }),
+            begin_area: None,
             life_span: Some(LifeSpan {
                 ended: Some(true),
-                begin: Some(NaiveDate::from_ymd_opt(1988, 1, 1).unwrap()),
+                begin: Some(NaiveDate::from_ymd_opt(1987, 1, 1).unwrap()),
                 end: Some(NaiveDate::from_ymd_opt(1994, 4, 5).unwrap()),
             }),
             tags: None,

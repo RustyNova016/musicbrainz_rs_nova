@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::area::*;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::area::*;
+use musicbrainz_rs_nova::prelude::*;
 
 #[test]
 fn should_get_area_tags() {

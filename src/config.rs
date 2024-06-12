@@ -143,7 +143,7 @@ fn init_http_retries() -> MusicBrainzRetries {
 ///
 /// ## Example
 /// ```rust
-/// musicbrainz_rs::config::set_user_agent("MyAwesomeTagger/1.2.0 ( http://myawesometagger.example.com )");
+/// musicbrainz_rs_nova::config::set_user_agent("MyAwesomeTagger/1.2.0 ( http://myawesometagger.example.com )");
 /// ```
 pub fn set_user_agent(user_agent: &'static str) {
     let client_ref = Arc::clone(&HTTP_CLIENT.0);

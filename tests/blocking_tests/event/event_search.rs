@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::event::*;
-use musicbrainz_rs::Search;
+use musicbrainz_rs_nova::entity::event::*;
+use musicbrainz_rs_nova::Search;
 
 #[test]
 fn should_search_event() {

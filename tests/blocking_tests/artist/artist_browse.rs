@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::artist::*;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::artist::*;
+use musicbrainz_rs_nova::prelude::*;
 
 #[test]
 fn should_browse_artist_by_release_groups() {

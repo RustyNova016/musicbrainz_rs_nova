@@ -1,9 +1,9 @@
-use musicbrainz_rs::entity::artist::{Artist, ArtistSearchQuery};
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::artist::{Artist, ArtistSearchQuery};
+use musicbrainz_rs_nova::prelude::*;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
-    musicbrainz_rs::config::set_user_agent("my_awesome_app/1.0");
+    musicbrainz_rs_nova::config::set_user_agent("my_awesome_app/1.0");
 
     let query = ArtistSearchQuery::query_builder()
         .artist("Miles Davis")

@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::recording::*;
-use musicbrainz_rs::Search;
+use musicbrainz_rs_nova::entity::recording::*;
+use musicbrainz_rs_nova::Search;
 
 #[test]
 fn should_search_recording() {

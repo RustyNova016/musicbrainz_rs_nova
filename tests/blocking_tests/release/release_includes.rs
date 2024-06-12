@@ -1,6 +1,6 @@
-use musicbrainz_rs::entity::release::Media;
-use musicbrainz_rs::entity::release::Release;
-use musicbrainz_rs::prelude::*;
+use musicbrainz_rs_nova::entity::release::Media;
+use musicbrainz_rs_nova::entity::release::Release;
+use musicbrainz_rs_nova::prelude::*;
 
 use std::collections::HashSet;
 

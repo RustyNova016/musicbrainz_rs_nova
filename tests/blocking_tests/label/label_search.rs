@@ -1,5 +1,5 @@
-use musicbrainz_rs::entity::label::*;
-use musicbrainz_rs::Search;
+use musicbrainz_rs_nova::entity::label::*;
+use musicbrainz_rs_nova::Search;
 
 #[test]
 fn should_search_label() {

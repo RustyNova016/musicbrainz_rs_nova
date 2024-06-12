@@ -1,7 +1,7 @@
-use musicbrainz_rs::entity::release::*;
-use musicbrainz_rs::entity::CoverartResponse;
-use musicbrainz_rs::Fetch;
-use musicbrainz_rs::FetchCoverart;
+use musicbrainz_rs_nova::entity::release::*;
+use musicbrainz_rs_nova::entity::CoverartResponse;
+use musicbrainz_rs_nova::Fetch;
+use musicbrainz_rs_nova::FetchCoverart;
 
 #[test]
 fn should_get_release_coverart() {

@@ -4,7 +4,7 @@ ignore_merge_commits = true
 pre_bump_hooks = [
     "cargo test -- --test-threads 1",
     "cargo clippy",
-    "cargo build --release",
+    "cargo build --release --jobs 1",
     "cargo fmt --all",
     "cargo set-version {{version}}",
 ]
@@ -20,8 +20,8 @@ post_bump_hooks = [
 path = "CHANGELOG.md"
 template = "remote"
 remote = "github.com"
-repository = "musicbrainz_rs"
-owner = "oknozor"
+repository = "musicbrainz_rs_nova"
+owner = "RustyNova"
 authors = [
     { signature = "Paul Delafosse", username = "oknozor" },
     { signature = "okno", username = "oknozor" },
@@ -29,4 +29,5 @@ authors = [
     { signature = "Yesterday17", username = "Yesterday17" },
     { signature = "snylonue", username = "snylonue" },
     { signature = "nappa85", username = "Marco Napetti" },
+    { signature = "RustyNova", username = "RustyNova" },
 ]

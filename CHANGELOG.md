@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [0.5.1](https://github.com/RustyNova/musicbrainz_rs_nova/compare/4f284f3adf4c9f95fb219442ac7a833fc2946fc5..0.5.1) - 2024-05-30
+#### Miscellaneous Chores
+- Fixed broken test data - ([611dd1f](https://github.com/RustyNova/musicbrainz_rs_nova/commit/611dd1f166dc25b8bcec01cace158a2dd7eb8d83)) - [@RustyNova](https://github.com/RustyNova)
+- Changed crate name - ([6179b31](https://github.com/RustyNova/musicbrainz_rs_nova/commit/6179b314f892a5a3f8f207888fada4fb09d1414b)) - [@RustyNova](https://github.com/RustyNova)
+- Changed CI for fork - ([e62dee2](https://github.com/RustyNova/musicbrainz_rs_nova/commit/e62dee2a299a4b14f012c51600152ac937aef85c)) - [@RustyNova](https://github.com/RustyNova)
+
+- - -
+
 ## [0.5.0](https://github.com/oknozor/musicbrainz_rs/compare/0.4.0..0.5.0) - 2023-01-22
 #### Bug Fixes
 - **(artist)** fix artist fuzzy search - ([b737202](https://github.com/oknozor/musicbrainz_rs/commit/b73720213e3cd131ac9271b15d7cdb3adf761dc7)) - [@ritiek](https://github.com/ritiek)
