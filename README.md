@@ -32,7 +32,7 @@ musicbrainz_rs_nova = "0.5.1"
 **blocking client:**
 
 ```toml
-musicbrainz_rs_nova = { version = "0.5.1", features = ["blocking"] }
+musicbrainz_rs_nova = { version = "0.5.1", default-features = false, features = ["blocking"] }
 ```
 
 ## Features
