@@ -26,13 +26,13 @@ You can choose to use either the default async client or a blocking one.
 **async client:**
 
 ```toml
-musicbrainz_rs = "0.5.0"
+musicbrainz_rs_nova = "0.5.1"
 ```
 
 **blocking client:**
 
 ```toml
-musicbrainz_rs = { version = "0.5.0", features = ["blocking"] }
+musicbrainz_rs_nova = { version = "0.5.1", features = ["blocking"] }
 ```
 
 ## Features
