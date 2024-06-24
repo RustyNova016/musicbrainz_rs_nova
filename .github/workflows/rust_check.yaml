@@ -86,7 +86,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - name: Run clippy
-        run: cargo clippy --all-features -- -D warnings 
+        run: cargo hack clippy --feature-powerset --mutually-exclusive-features=async,blocking --at-least-one-of=async,blocking --ignore-private -- -D warnings
 
   docs:
     runs-on: ubuntu-latest
