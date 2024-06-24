@@ -1,0 +1,140 @@
+name: Rust_Checks
+
+on:
+  push:
+    branches: [ "master", "develop" ]
+  pull_request:
+    branches: [ "master", "develop" ]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: -Dwarnings
+  RUST_BACKTRACE: 1
+
+# Copied from the dotenvy crate
+# https://github.com/allan2/dotenvy/blob/master/.github/workflows/ci.yml
+
+jobs:
+  stable_tests:
+    runs-on: ${{ matrix.os }}
+    needs: clippy
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: rustup toolchain install stable --profile minimal --no-self-update
+
+      - uses: Swatinem/rust-cache@v2
+        with: 
+          key: "(${{ matrix.os }})"
+
+      - uses: taiki-e/install-action@cargo-hack
+
+      - name: Build tests
+        run: cargo hack build --feature-powerset --mutually-exclusive-features=async,blocking --at-least-one-of=async,blocking --ignore-private
+        
+      - name: Run tests
+        run: cargo hack test --feature-powerset --mutually-exclusive-features=async,blocking --at-least-one-of=async,blocking --ignore-private
+
+  unstable_tests:
+    runs-on: ${{ matrix.os }}
+    needs: stable_tests
+    strategy:
+      fail-fast: false
+      matrix:
+        rust: [beta, nightly]
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: rustup toolchain install stable --profile minimal --no-self-update
+
+      - uses: Swatinem/rust-cache@v2
+        with: 
+          key: "(${{ matrix.rust }} - ${{ matrix.os }})"
+
+      - uses: taiki-e/install-action@cargo-hack
+
+      - name: Build tests
+        run: cargo hack build --feature-powerset --mutually-exclusive-features=async,blocking --at-least-one-of=async,blocking --ignore-private
+        
+      - name: Run tests
+        run: cargo hack test --feature-powerset --mutually-exclusive-features=async,blocking --at-least-one-of=async,blocking --ignore-private
+
+  clippy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install minimal toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+          components: clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run clippy
+        run: cargo clippy --all-features -- -D warnings 
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install minimal toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run rustdoc
+        env:
+          RUSTDOCFLAGS: -D warnings
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
+          args: --no-deps --document-private-items
+
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install minimal toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+          components: rustfmt
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run rustfmt
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all --check
+
+  msrv:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: Swatinem/rust-cache@v2
+    - uses: taiki-e/install-action@cargo-hack
+    - run: cargo hack check --rust-version --workspace --all-targets --ignore-private
