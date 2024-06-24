@@ -79,7 +79,7 @@ async fn wait_for_ratelimit() {
     sleep_until(*next_slot).await;
 
     // We set the next window to be the next second. According to MB's documentation, the user should limit itself to 1 request / second
-    *next_slot = Instant::now() + Duration::from_secs(1); 
+    *next_slot = Instant::now() + Duration::from_secs(1);
 }
 
 #[cfg(feature = "async")]
