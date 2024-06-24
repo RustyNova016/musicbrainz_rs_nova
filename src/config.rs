@@ -3,8 +3,6 @@ use reqwest::header;
 use reqwest::Error;
 use std::sync::Arc;
 use std::sync::Mutex;
-#[cfg(feature = "rate_limit")]
-use std::sync::RwLock;
 use std::time::Duration;
 
 #[cfg(feature = "blocking")]
@@ -12,11 +10,6 @@ use reqwest::blocking::{Client, RequestBuilder, Response};
 
 #[cfg(feature = "async")]
 use reqwest::{Client, RequestBuilder, Response};
-
-#[cfg(feature = "rate_limit")]
-use tokio::time::sleep_until;
-#[cfg(feature = "rate_limit")]
-use tokio::time::Instant;
 
 pub(crate) const BASE_URL: &str = "http://musicbrainz.org/ws/2";
 pub(crate) const BASE_COVERART_URL: &str = "http://coverartarchive.org";
@@ -32,9 +25,6 @@ struct MusicBrainzRetries(Arc<Mutex<u32>>);
 
 pub(crate) static HTTP_CLIENT: Lazy<MusicBrainzClient> = Lazy::new(init_http_client);
 static HTTP_RETRIES: Lazy<MusicBrainzRetries> = Lazy::new(init_http_retries);
-
-#[cfg(feature = "rate_limit")]
-static RATE_LIMIT_NEXT_SPOT: Lazy<RwLock<Instant>> = Lazy::new(|| RwLock::new(Instant::now()));
 
 impl MusicBrainzClient {
     pub(crate) fn get(&self, path: &str) -> RequestBuilder {
@@ -67,20 +57,6 @@ impl MusicBrainzClient {
             }
         }
     }
-}
-
-/// Wait for the next rate limit window, with concurency checks
-#[cfg(feature = "rate_limit")]
-async fn wait_for_ratelimit() {
-    // We get the next request window in write
-    #![allow(clippy::await_holding_lock)] // Clippy complains that we hog the lock during the wait. But this is exactly what we want. So we ignore this lint in this case
-    let mut next_slot = RATE_LIMIT_NEXT_SPOT.write().unwrap();
-
-    // Then we wait for window to come
-    sleep_until(*next_slot).await;
-
-    // We set the next window to be the next second. According to MB's documentation, the user should limit itself to 1 request / second
-    *next_slot = Instant::now() + Duration::from_secs(1);
 }
 
 #[cfg(feature = "async")]
