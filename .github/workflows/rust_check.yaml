@@ -63,9 +63,6 @@ jobs:
           key: "(${{ matrix.rust }} - ${{ matrix.os }})"
 
       - uses: taiki-e/install-action@cargo-hack
-
-      - name: Build tests
-        run: cargo hack build --feature-powerset --mutually-exclusive-features=async,blocking --at-least-one-of=async,blocking --ignore-private
         
       - name: Run tests
         run: cargo hack test --feature-powerset --mutually-exclusive-features=async,blocking --at-least-one-of=async,blocking --ignore-private
@@ -84,6 +81,8 @@ jobs:
           components: clippy
 
       - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@cargo-hack
 
       - name: Run clippy
         run: cargo hack clippy --feature-powerset --mutually-exclusive-features=async,blocking --at-least-one-of=async,blocking --ignore-private -- -D warnings
