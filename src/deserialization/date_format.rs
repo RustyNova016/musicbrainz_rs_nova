@@ -16,7 +16,7 @@ where
         .map_err(serde::de::Error::custom)
 }
 
-/// This is the Option<NaiveDate> version of the previous deserializer
+/// This is the `Option<NaiveDate>` version of the previous deserializer
 #[allow(clippy::unnecessary_wraps)]
 pub(crate) fn deserialize_opt<'de, D>(deserializer: D) -> Result<Option<NaiveDate>, D::Error>
 where

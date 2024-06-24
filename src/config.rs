@@ -67,6 +67,10 @@ impl MusicBrainzClient {
     ) -> Result<Response, Error> {
         use wasm_timer::Delay;
         let mut retries = *HTTP_RETRIES.0.lock().unwrap();
+
+        #[cfg(feature = "rate_limit")]
+        super::rate_limit::wait_for_ratelimit().await;
+
         loop {
             let request = request.try_clone().unwrap();
             let response = request.send().await?;

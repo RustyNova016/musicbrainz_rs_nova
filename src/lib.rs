@@ -56,6 +56,10 @@ pub mod entity;
 /// Brings trait and type needed to perform any API query in scope
 pub mod prelude;
 
+/// Utilities for the rate_limiting
+#[cfg(feature = "rate_limit")]
+pub(crate) mod rate_limit;
+
 use crate::entity::search::{SearchResult, Searchable};
 use deserialization::date_format;
 use entity::Browsable;
@@ -368,7 +372,7 @@ where
             let url = response.url().clone();
             CoverartResponse::Url(url.to_string())
         } else {
-            CoverartResponse::Json(response.json().unwrap())
+            CoverartResponse::Json(response.json()?)
         };
         Ok(coverart_response)
     }
@@ -382,7 +386,7 @@ where
             let url = response.url().clone();
             CoverartResponse::Url(url.to_string())
         } else {
-            CoverartResponse::Json(response.json().await.unwrap())
+            CoverartResponse::Json(response.json().await?)
         };
         Ok(coverart_response)
     }
