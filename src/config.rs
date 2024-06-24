@@ -3,6 +3,7 @@ use reqwest::header;
 use reqwest::Error;
 use std::sync::Arc;
 use std::sync::Mutex;
+#[cfg(feature = "rate_limit")]
 use std::sync::RwLock;
 use std::time::Duration;
 
