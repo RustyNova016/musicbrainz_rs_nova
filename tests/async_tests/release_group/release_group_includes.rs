@@ -120,7 +120,6 @@ async fn should_get_release_group_annotation() {
 
 //     assert!(relations.iter().any(|rel| rel.relation_type == "cover"));
 // }
-
 #[tokio::test]
 #[serial_test::serial]
 async fn should_get_release_group_series_relations() {
