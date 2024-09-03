@@ -263,7 +263,11 @@ pub struct BrowseQuery<T> {
 /// # }
 /// ```
 #[derive(Clone, Debug)]
-pub struct SearchQuery<T>(Query<T>);
+pub struct SearchQuery<T> {
+    inner: Query<T>,
+    offset: Option<u16>,
+    limit: Option<u8>,
+}
 
 impl<'a, T> FetchQuery<T>
 where
@@ -449,7 +453,7 @@ where
         T: Search<'a> + DeserializeOwned + Searchable,
     {
         self.include_to_path();
-        let request = HTTP_CLIENT.get(&self.0.path);
+        let request = HTTP_CLIENT.get(&self.inner.path);
         HTTP_CLIENT.send_with_retries(request)?.json()
     }
 
@@ -459,12 +463,34 @@ where
         T: Search<'a> + DeserializeOwned + Searchable,
     {
         self.include_to_path();
-        let request = HTTP_CLIENT.get(&self.0.path);
+        let request = HTTP_CLIENT.get(&self.inner.path);
         HTTP_CLIENT.send_with_retries(request).await?.json().await
     }
 
     fn include_to_path(&mut self) {
-        self.0.include_to_path()
+        self.inner.include_to_path();
+
+        if let Some(limit) = self.limit {
+            self.inner.path.push_str(PARAM_LIMIT);
+            self.inner.path.push_str(&limit.to_string());
+        }
+
+        if let Some(offset) = self.offset {
+            self.inner.path.push_str(PARAM_OFFSET);
+            self.inner.path.push_str(&offset.to_string());
+        }
+    }
+
+    /// An integer value defining how many entries should be returned. Only values between 1 and 100 (both inclusive) are allowed. If not given, this defaults to 25.
+    pub fn limit(&mut self, limit: u8) -> &mut Self {
+        self.limit = Some(limit);
+        self
+    }
+
+    /// Return search results starting at a given offset. Used for paging through more than one page of results.
+    pub fn offset(&mut self, offset: u16) -> &mut Self {
+        self.offset = Some(offset);
+        self
     }
 }
 
@@ -563,10 +589,14 @@ pub trait Search<'a> {
     where
         Self: Sized + Path<'a>,
     {
-        SearchQuery(Query {
-            path: format!("{}/{}{}&{}", BASE_URL, Self::path(), FMT_JSON, query),
-            phantom: PhantomData,
-            include: vec![],
-        })
+        SearchQuery {
+            inner: Query {
+                path: format!("{}/{}{}&{}", BASE_URL, Self::path(), FMT_JSON, query),
+                phantom: PhantomData,
+                include: vec![],
+            },
+            limit: None,
+            offset: None,
+        }
     }
 }
