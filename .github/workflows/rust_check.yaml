@@ -15,56 +15,55 @@ env:
 # https://github.com/allan2/dotenvy/blob/master/.github/workflows/ci.yml
 
 jobs:
-  # The tests are removed due to having issues with initialising multiple runtimes. 
-  # but it would be great to find an actual solution
-  # stable_tests:
-  #   runs-on: ${{ matrix.os }}
-  #   needs: clippy
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os:
-  #         - windows-latest
-  #         - ubuntu-latest
-  #         - macos-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
+  stable_tests:
+    runs-on: ${{ matrix.os }}
+    needs: clippy
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - run: rustup toolchain install stable --profile minimal --no-self-update
+      - run: rustup toolchain install stable --profile minimal --no-self-update
 
-  #     - uses: Swatinem/rust-cache@v2
-  #       with: 
-  #         key: "(${{ matrix.os }})"
+      - uses: Swatinem/rust-cache@v2
+        with: 
+          key: "(${{ matrix.os }})"
 
-  #     - uses: taiki-e/install-action@cargo-hack
+      - uses: taiki-e/install-action@cargo-hack
         
-  #     - name: Run tests
-  #       # We exclude testing "async" due to the test having issues with initialising multiple runtimes. rate_limit allow to fix this issue, but it would be great to find an actual solution
-  #       run: cargo hack test --feature-powerset --mutually-exclusive-features=rate_limit,blocking --at-least-one-of=async,blocking --exclude-features=async --ignore-private
-  # unstable_tests:
-  #   runs-on: ${{ matrix.os }}
-  #   needs: stable_tests
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       rust: [beta, nightly]
-  #       os:
-  #         - windows-latest
-  #         - ubuntu-latest
-  #         - macos-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
+      - name: Run tests
+        # We exclude testing "async" due to the test having issues with initialising multiple runtimes. rate_limit allow to fix this issue, but it would be great to find an actual solution
+        run: cargo hack test --feature-powerset --mutually-exclusive-features=rate_limit,blocking --at-least-one-of=async,blocking --exclude-features=async --ignore-private
+  
+  unstable_tests:
+    runs-on: ${{ matrix.os }}
+    needs: stable_tests
+    strategy:
+      fail-fast: false
+      matrix:
+        rust: [beta, nightly]
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - run: rustup toolchain install stable --profile minimal --no-self-update
+      - run: rustup toolchain install stable --profile minimal --no-self-update
 
-  #     - uses: Swatinem/rust-cache@v2
-  #       with: 
-  #         key: "(${{ matrix.rust }} - ${{ matrix.os }})"
+      - uses: Swatinem/rust-cache@v2
+        with: 
+          key: "(${{ matrix.rust }} - ${{ matrix.os }})"
 
-  #     - uses: taiki-e/install-action@cargo-hack
+      - uses: taiki-e/install-action@cargo-hack
         
-  #     - name: Run tests
-  #       run: cargo hack test --feature-powerset --mutually-exclusive-features=rate_limit,blocking --at-least-one-of=async,blocking --exclude-features=async --ignore-private
+      - name: Run tests
+        run: cargo hack test --feature-powerset --mutually-exclusive-features=rate_limit,blocking --at-least-one-of=async,blocking --exclude-features=async --ignore-private
 
   clippy:
     runs-on: ubuntu-latest
