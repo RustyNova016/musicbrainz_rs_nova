@@ -22,6 +22,7 @@ use musicbrainz_rs_nova::entity::work::*;
 use musicbrainz_rs_nova::prelude::*;
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_artist_by_id() {
     let nirvana = Artist::fetch()
         .id("5b11f4ce-a62d-471e-81fc-a69a8278c7da")
@@ -74,6 +75,7 @@ async fn should_get_artist_by_id() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_artist_relations_from_release() {
     let in_utero = Release::fetch()
         .id("76df3287-6cda-33eb-8e9a-044b5e15ffdd")
@@ -126,6 +128,7 @@ async fn should_get_artist_relations_from_release() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_recording_by_id() {
     let polly = Recording::fetch()
         .id("af40d6b8-58e8-4ca5-9db8-d4fca0b899e2")
@@ -154,6 +157,7 @@ async fn should_get_recording_by_id() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_release_group_by_id() {
     let in_utero = ReleaseGroup::fetch()
         .id("2a0981fb-9593-3019-864b-ce934d97a16e")
@@ -184,6 +188,7 @@ async fn should_get_release_group_by_id() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_release() {
     let in_utero = Release::fetch()
         .id("18d4e9b4-9247-4b44-914a-8ddec3502103")
@@ -218,6 +223,7 @@ async fn should_get_release() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_work_by_id() {
     let hotel_california = Work::fetch()
         .id("22457dc0-ecbf-38f5-9056-11c858530a50")
@@ -277,6 +283,7 @@ async fn should_get_work_by_id() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_label_by_id() {
     let ninja_tune = Label::fetch()
         .id("dc940013-b8a8-4362-a465-291026c04b42")
@@ -306,6 +313,7 @@ async fn should_get_label_by_id() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_area_by_id() {
     let aberdeen = Area::fetch()
         .id("a640b45c-c173-49b1-8030-973603e895b5")
@@ -337,6 +345,7 @@ async fn should_get_area_by_id() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_event_by_id() {
     let dour_festival_1989 = Event::fetch()
         .id("73df2f48-383b-4930-bad3-05ba938be578")
@@ -370,6 +379,7 @@ async fn should_get_event_by_id() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_instrument() {
     let mandoline = Instrument::fetch()
         .id("37fa9bb5-d5d7-4b0f-aa4d-531339ba9c32")
@@ -395,6 +405,7 @@ async fn should_get_instrument() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_place() {
     let blue_note_record = Place::fetch()
         .id("327c29c6-da63-4dc9-a117-1917ee691ce4")
@@ -444,6 +455,7 @@ async fn should_get_place() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_series() {
     let la_chanson_du_dimanche = Series::fetch()
         .id("814fb4d5-327f-4e37-8784-f8a707e5f97c")
@@ -468,6 +480,7 @@ async fn should_get_series() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_url() {
     let svinkels_dot_com = Url::fetch()
         .id("9237f6da-fec6-4b8a-9d52-c7c18e0e2630")

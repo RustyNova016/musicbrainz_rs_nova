@@ -2,6 +2,7 @@ use musicbrainz_rs_nova::entity::artist::*;
 use musicbrainz_rs_nova::prelude::*;
 
 #[tokio::test]
+#[serial_test::serial]
 async fn set_user_agent_should_work() {
     musicbrainz_rs_nova::config::set_user_agent("my_awesome_app/1.0");
 

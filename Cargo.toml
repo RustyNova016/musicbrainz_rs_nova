@@ -28,6 +28,7 @@ tokio = { version = "^1.38.0", optional = true } # Using tokio for sleep_until. 
 
 [dev-dependencies]
 tokio = { version = "1.38.0", features = ["macros", "rt", "rt-multi-thread"]}
+serial_test = "3.1.1"
 
 [features]
 default = ["reqwest/default-tls", "async", "rate_limit"]
