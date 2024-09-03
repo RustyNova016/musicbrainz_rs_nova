@@ -2,6 +2,7 @@ use musicbrainz_rs_nova::entity::place::*;
 use musicbrainz_rs_nova::prelude::*;
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_place_aliases() {
     let blue_note = Place::fetch()
         .id("327c29c6-da63-4dc9-a117-1917ee691ce4")
@@ -14,6 +15,7 @@ async fn should_get_place_aliases() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_place_tags() {
     let olympia = Place::fetch()
         .id("36678fc4-2fee-46be-b084-4c4e2314ce71")
@@ -25,6 +27,7 @@ async fn should_get_place_tags() {
     assert!(olympia.tags.is_some());
 }
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_place_genres() {
     let olympia = Place::fetch()
         .id("36678fc4-2fee-46be-b084-4c4e2314ce71")
@@ -37,6 +40,7 @@ async fn should_get_place_genres() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_place_annotation() {
     let osaka_kosei_nenkin_kaikan = Place::fetch()
         .id("751f998a-60ca-4d48-954f-b101d59ad89a")
@@ -49,6 +53,7 @@ async fn should_get_place_annotation() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_place_event_relations() {
     let olympia = Place::fetch()
         .id("36678fc4-2fee-46be-b084-4c4e2314ce71")
@@ -63,6 +68,7 @@ async fn should_get_place_event_relations() {
 }
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_get_place_recording_relations() {
     let olympia = Place::fetch()
         .id("36678fc4-2fee-46be-b084-4c4e2314ce71")
@@ -82,6 +88,7 @@ async fn should_get_place_recording_relations() {
 // thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value:
 // Error(Json(Error("missing field `date`", line: 1, column: 1233)))', tests/place/place_includes.rs:80:10
 // #[tokio::test]
+// #[serial_test::serial]
 // async fn should_get_place_release_relations() {
 //     let olympia = Place::fetch()
 //         .id("36678fc4-2fee-46be-b084-4c4e2314ce71")

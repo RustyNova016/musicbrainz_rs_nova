@@ -2,6 +2,7 @@ use musicbrainz_rs_nova::entity::series::*;
 use musicbrainz_rs_nova::Search;
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_search_series() {
     let query = SeriesSearchQuery::query_builder()
         .series("now that's what i call music")
