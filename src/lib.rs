@@ -56,10 +56,14 @@ pub mod entity;
 /// Brings trait and type needed to perform any API query in scope
 pub mod prelude;
 
+/// Crate errors;
+pub mod error;
+
 /// Utilities for the rate_limiting
 #[cfg(feature = "rate_limit")]
 pub(crate) mod rate_limit;
 
+use crate::entity::api::MusicbrainzResult;
 use crate::entity::search::{SearchResult, Searchable};
 use deserialization::date_format;
 use entity::Browsable;
@@ -68,8 +72,8 @@ use entity::Include;
 use entity::{CoverartResolution, CoverartResponse, CoverartTarget, CoverartType};
 use std::fmt::Write as _;
 
-/// Type alias for [reqwest::Error]
-pub type Error = reqwest::Error;
+/// Rexports
+pub use crate::error::Error;
 
 #[derive(Clone, Debug)]
 struct Query<T> {
@@ -283,10 +287,16 @@ where
     where
         T: Fetch<'a> + DeserializeOwned,
     {
+        use entity::api::MusicbrainzResult;
+
         self.0.path.push_str(FMT_JSON);
         self.include_to_path();
         let request = HTTP_CLIENT.get(&self.0.path);
-        HTTP_CLIENT.send_with_retries(request)?.json()
+
+        HTTP_CLIENT
+            .send_with_retries(request)?
+            .json::<MusicbrainzResult<T>>()?
+            .into_result(self.0.path.clone())
     }
 
     #[cfg(feature = "async")]
@@ -297,7 +307,13 @@ where
         self.0.path.push_str(FMT_JSON);
         self.include_to_path();
         let request = HTTP_CLIENT.get(&self.0.path);
-        HTTP_CLIENT.send_with_retries(request).await?.json().await
+
+        HTTP_CLIENT
+            .send_with_retries(request)
+            .await?
+            .json::<MusicbrainzResult<T>>()
+            .await?
+            .into_result(self.0.path.clone())
     }
 
     fn include_to_path(&mut self) {
@@ -407,7 +423,11 @@ where
     {
         self.include_to_path();
         let request = HTTP_CLIENT.get(&self.inner.path);
-        HTTP_CLIENT.send_with_retries(request)?.json()
+
+        HTTP_CLIENT
+            .send_with_retries(request)?
+            .json::<MusicbrainzResult<BrowseResult<T>>>()?
+            .into_result(self.inner.path.clone())
     }
 
     #[cfg(feature = "async")]
@@ -417,7 +437,13 @@ where
     {
         self.include_to_path();
         let request = HTTP_CLIENT.get(&self.inner.path);
-        HTTP_CLIENT.send_with_retries(request).await?.json().await
+
+        HTTP_CLIENT
+            .send_with_retries(request)
+            .await?
+            .json::<MusicbrainzResult<BrowseResult<T>>>()
+            .await?
+            .into_result(self.inner.path.clone())
     }
 
     fn include_to_path(&mut self) {
@@ -454,7 +480,11 @@ where
     {
         self.include_to_path();
         let request = HTTP_CLIENT.get(&self.inner.path);
-        HTTP_CLIENT.send_with_retries(request)?.json()
+
+        HTTP_CLIENT
+            .send_with_retries(request)?
+            .json::<MusicbrainzResult<SearchResult<T>>>()?
+            .into_result(self.inner.path.clone())
     }
 
     #[cfg(feature = "async")]
@@ -464,7 +494,13 @@ where
     {
         self.include_to_path();
         let request = HTTP_CLIENT.get(&self.inner.path);
-        HTTP_CLIENT.send_with_retries(request).await?.json().await
+
+        HTTP_CLIENT
+            .send_with_retries(request)
+            .await?
+            .json::<MusicbrainzResult<SearchResult<T>>>()
+            .await?
+            .into_result(self.inner.path.clone())
     }
 
     fn include_to_path(&mut self) {
