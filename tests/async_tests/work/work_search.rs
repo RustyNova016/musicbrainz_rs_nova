@@ -2,6 +2,7 @@ use musicbrainz_rs_nova::entity::work::*;
 use musicbrainz_rs_nova::Search;
 
 #[tokio::test]
+#[serial_test::serial]
 async fn should_search_work() {
     let query = WorkSearchQuery::query_builder()
         .work("vater unser im")
