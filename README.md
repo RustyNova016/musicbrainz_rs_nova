@@ -251,10 +251,7 @@ Here is the list of supported feature values. The default features are: `async`,
 
 ## MSRV
 
-The Minimum Supported Rust Version for cacache is `1.64.0`. Any bump to the
-MSRV will be considered breaking changes.
-
-Currently the MSRV hasn't been checked if it's the actual minimum version, so it may go down. If it's an issue for you, please send a reply [here](https://github.com/RustyNova016/musicbrainz_rs_nova/issues/7) and I'll hurry up. Similarly, it may bump up to 1.75 if async in traits is needed
+The Minimum Supported Rust Version for the crate is `1.70.0`. Any bump to the MSRV will be considered breaking changes.
 
 ## Contributing
 
