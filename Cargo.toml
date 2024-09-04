@@ -1,6 +1,6 @@
 [package]
 name = "musicbrainz_rs_nova"
-version = "0.5.1"
+version = "0.6.0"
 authors = ["okno <paul.delafosse@protonmail.com>", "RustyNova"]
 repository = "https://github.com/RustyNova016/musicbrainz_rs"
 documentation = "https://docs.rs/musicbrainz_rs_nova"
@@ -11,7 +11,7 @@ description = """
 MusicBrainz Rust is a utility crate for the
 MusicBrainz API.
 """
-rust-version = "1.70"
+rust-version = "1.70.0"
 
 [badges]
 travis-ci = { repository = "oknozor/musicbrainz_rs", branch = "master" }
