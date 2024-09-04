@@ -82,6 +82,7 @@ macro_rules! impl_fetchcoverart {
 
 pub mod alias;
 pub mod annotation;
+pub mod api;
 pub mod area;
 pub mod artist;
 pub mod artist_credit;
