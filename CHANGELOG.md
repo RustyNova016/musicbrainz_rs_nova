@@ -2,6 +2,24 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [0.7.0](https://github.com/RustyNova/musicbrainz_rs_nova/compare/64668e301b4782f885091b561e90cd6a4c9f3418..0.7.0) - 2024-09-04
+#### Build system
+- **(deps)** bump softprops/action-gh-release from 1 to 2 - ([8a8903c](https://github.com/RustyNova/musicbrainz_rs_nova/commit/8a8903c5be7728ede59d126bf78b41953c2f8bcc)) - dependabot[bot]
+- **(deps)** bump actions/checkout from 2 to 4 - ([64668e3](https://github.com/RustyNova/musicbrainz_rs_nova/commit/64668e301b4782f885091b561e90cd6a4c9f3418)) - dependabot[bot]
+- Bump MSRV to 1.70 - ([fab5c38](https://github.com/RustyNova/musicbrainz_rs_nova/commit/fab5c386134256cfd4db1095e7593347df943d87)) - [@RustyNova](https://github.com/RustyNova)
+#### Continuous Integration
+- Reduced number of tests - ([f2fdb3b](https://github.com/RustyNova/musicbrainz_rs_nova/commit/f2fdb3b2a112724e88206fd97cb5b4a0b825a822)) - [@RustyNova](https://github.com/RustyNova)
+- restore tests - ([30e585b](https://github.com/RustyNova/musicbrainz_rs_nova/commit/30e585b79f73b6a59c24812ef8bb9114e158571b)) - [@RustyNova](https://github.com/RustyNova)
+#### Miscellaneous Chores
+- Update version in readme - ([5d93f6a](https://github.com/RustyNova/musicbrainz_rs_nova/commit/5d93f6aa88e7642f264cefb5c0d701cb82099a07)) - [@RustyNova](https://github.com/RustyNova)
+- Update MSRV in readme - ([57d6044](https://github.com/RustyNova/musicbrainz_rs_nova/commit/57d6044bf9ff23ca0d3cbfe0830eeaa27e297f4d)) - [@RustyNova](https://github.com/RustyNova)
+#### Style
+- format - ([cd27f0a](https://github.com/RustyNova/musicbrainz_rs_nova/commit/cd27f0acc949b6423b2321d01d35d1b59c076945)) - [@RustyNova](https://github.com/RustyNova)
+#### Tests
+- Fixed async test with serialization - ([e6fb58c](https://github.com/RustyNova/musicbrainz_rs_nova/commit/e6fb58c9aa648e14dbfd5089a63e64b4879e1332)) - [@RustyNova](https://github.com/RustyNova)
+
+- - -
+
 ## [0.5.1](https://github.com/RustyNova/musicbrainz_rs_nova/compare/4f284f3adf4c9f95fb219442ac7a833fc2946fc5..0.5.1) - 2024-05-30
 #### Miscellaneous Chores
 - Fixed broken test data - ([611dd1f](https://github.com/RustyNova/musicbrainz_rs_nova/commit/611dd1f166dc25b8bcec01cace158a2dd7eb8d83)) - [@RustyNova](https://github.com/RustyNova)
