@@ -1,6 +1,6 @@
 [package]
 name = "musicbrainz_rs_nova"
-version = "0.6.0"
+version = "0.7.0"
 authors = ["okno <paul.delafosse@protonmail.com>", "RustyNova"]
 repository = "https://github.com/RustyNova016/musicbrainz_rs"
 documentation = "https://docs.rs/musicbrainz_rs_nova"
@@ -28,7 +28,7 @@ tokio = { version = "^1.38.0", optional = true }                                
 thiserror = "1.0.63"
 
 [dev-dependencies]
-tokio = { version = "1.38.0", features = ["macros", "rt", "rt-multi-thread"]}
+tokio = { version = "1.38.0", features = ["macros", "rt", "rt-multi-thread"] }
 serial_test = "3.1.1"
 
 [features]
@@ -37,6 +37,7 @@ async = ["wasm-timer"]
 rustls = ["reqwest/rustls-tls"]
 blocking = ["reqwest/blocking"]
 rate_limit = ["tokio", "async"]
+legacy_serialize = []
 
 # Alternate default for development
 #default = ["reqwest/default-tls", "blocking"]
