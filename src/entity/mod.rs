@@ -374,7 +374,11 @@ impl BrowseBy {
 /// Browse query result are wrapped in this generic struct and paired with a custom
 /// Deserialize implementation to avoid reimplementing a custom deserializer for every entity.
 #[derive(Debug, Serialize, PartialEq, Eq, Clone)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    serde(rename_all(deserialize = "kebab-case"))
+)]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct BrowseResult<T> {
     pub count: i32,
     pub offset: i32,
