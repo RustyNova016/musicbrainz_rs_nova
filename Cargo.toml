@@ -28,7 +28,7 @@ tokio = { version = "^1.38.0", optional = true }                                
 thiserror = "1.0.63"
 
 [dev-dependencies]
-tokio = { version = "1.38.0", features = ["macros", "rt", "rt-multi-thread"]}
+tokio = { version = "1.38.0", features = ["macros", "rt", "rt-multi-thread"] }
 serial_test = "3.1.1"
 
 [features]
@@ -37,6 +37,7 @@ async = ["wasm-timer"]
 rustls = ["reqwest/rustls-tls"]
 blocking = ["reqwest/blocking"]
 rate_limit = ["tokio", "async"]
+legacy_serialize = []
 
 # Alternate default for development
 #default = ["reqwest/default-tls", "blocking"]
