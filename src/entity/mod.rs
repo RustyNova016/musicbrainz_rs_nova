@@ -296,7 +296,7 @@ impl Subquery {
             Subquery::Instruments => "instruments",
             Subquery::Series => "series",
             Subquery::ISRCs => "isrcs",
-            Subquery::Media => "media"
+            Subquery::Media => "media",
         }
     }
 }
