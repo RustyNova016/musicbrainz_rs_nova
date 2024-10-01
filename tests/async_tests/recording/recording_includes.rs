@@ -35,6 +35,24 @@ async fn should_get_recording_releases() {
 
 #[tokio::test]
 #[serial_test::serial]
+async fn should_get_recording_medias() {
+    let you_talk_too_much = Recording::fetch()
+        .id("de552ba4-572c-4c59-b2a9-0508619696ac")
+        .with_releases()
+        .with_medias()
+        .execute()
+        .await;
+
+    let releases = you_talk_too_much.unwrap().releases;
+
+    assert!(releases
+        .unwrap()
+        .iter()
+        .any(|release| release.title == "Hooker ’n Heat"));
+}
+
+#[tokio::test]
+#[serial_test::serial]
 async fn should_get_recording_aliases() {
     let you_talk_too_much = Recording::fetch()
         .id("de552ba4-572c-4c59-b2a9-0508619696ac")
