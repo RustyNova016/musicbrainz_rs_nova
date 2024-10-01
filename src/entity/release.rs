@@ -247,7 +247,7 @@ pub struct Media {
 )]
 #[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct Track {
-    pub recording: Recording,
+    pub recording: Option<Recording>,
     pub title: String,
     pub number: String,
     pub length: Option<u32>,
