@@ -217,6 +217,7 @@ impl_includes!(
     Artist,
     (with_recordings, Include::Subquery(Subquery::Recordings)),
     (with_releases, Include::Subquery(Subquery::Releases)),
+    (with_medias, Include::Subquery(Subquery::Media)),
     (
         with_releases_and_discids,
         Include::Subquery(Subquery::ReleasesWithDiscIds)

@@ -269,6 +269,7 @@ pub(crate) enum Subquery {
     Series,
     Instruments,
     ISRCs,
+    Media,
 }
 
 impl Subquery {
@@ -295,6 +296,7 @@ impl Subquery {
             Subquery::Instruments => "instruments",
             Subquery::Series => "series",
             Subquery::ISRCs => "isrcs",
+            Subquery::Media => "media"
         }
     }
 }

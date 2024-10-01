@@ -146,6 +146,7 @@ impl_includes!(
     ),
     (with_url_relations, Include::Relationship(Relationship::Url)),
     (with_releases, Include::Subquery(Subquery::Releases)),
+    (with_medias, Include::Subquery(Subquery::Media)),
     (with_tags, Include::Subquery(Subquery::Tags)),
     (with_aliases, Include::Subquery(Subquery::Aliases)),
     (with_ratings, Include::Subquery(Subquery::Rating)),

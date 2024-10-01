@@ -151,6 +151,7 @@ impl_includes!(
     Recording,
     (with_artists, Include::Subquery(Subquery::Artists)),
     (with_releases, Include::Subquery(Subquery::Releases)),
+    (with_medias, Include::Subquery(Subquery::Media)),
     (with_tags, Include::Subquery(Subquery::Tags)),
     (with_aliases, Include::Subquery(Subquery::Aliases)),
     (with_genres, Include::Subquery(Subquery::Genres)),
