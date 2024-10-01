@@ -15,7 +15,11 @@ use lucene_query_builder::QueryBuilder;
 /// overlapping concepts: imprints, and the companies that control them. Fortunately, in many cases
 /// the imprint and the company controlling it have the same name.
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    serde(rename_all(deserialize = "kebab-case"))
+)]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct Label {
     /// See [MusicBrainz Identifier](https://musicbrainz.org/doc/MusicBrainz_Identifier).
     pub id: String,
@@ -86,7 +90,11 @@ pub struct LabelSearchQuery {
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    serde(rename_all(deserialize = "kebab-case"))
+)]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct LabelInfo {
     pub catalog_number: Option<String>,
     pub label: Option<Label>,
