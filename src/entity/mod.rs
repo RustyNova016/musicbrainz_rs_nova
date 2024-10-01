@@ -21,6 +21,7 @@ use crate::Path;
 use crate::{Browse, Search};
 use crate::{CoverartQuery, FetchCoverart, FetchCoverartQuery};
 use serde::Serialize;
+use crate::entity::discid::Discid;
 
 macro_rules! impl_includes {
     ($ty: ty, $(($args:ident, $inc: expr)),+) => {
@@ -88,6 +89,7 @@ pub mod artist;
 pub mod artist_credit;
 pub mod cdstub;
 pub mod coverart;
+pub mod discid;
 pub mod event;
 pub mod genre;
 pub mod instrument;
@@ -117,6 +119,7 @@ impl Fetch<'_> for Instrument {}
 impl Fetch<'_> for Place {}
 impl Fetch<'_> for Series {}
 impl Fetch<'_> for Url {}
+impl Fetch<'_> for Discid {}
 
 impl_fetchcoverart!(Release, ReleaseGroup);
 
@@ -131,6 +134,7 @@ impl Browse<'_> for Place {}
 impl Browse<'_> for Work {}
 impl Browse<'_> for Instrument {}
 impl Browse<'_> for Series {}
+impl Browse<'_> for Discid {}
 
 impl Search<'_> for Area {}
 impl Search<'_> for Annotation {}
@@ -226,6 +230,12 @@ impl Path<'_> for Url {
 impl Path<'_> for CDStub {
     fn path() -> &'static str {
         "cdstub"
+    }
+}
+
+impl Path<'_> for Discid {
+    fn path() -> &'static str {
+        "discid"
     }
 }
 

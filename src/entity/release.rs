@@ -6,6 +6,7 @@ use super::{Include, Relationship, Subquery};
 use crate::date_format;
 use crate::entity::alias::Alias;
 use crate::entity::artist_credit::ArtistCredit;
+use crate::entity::discid::Disc;
 use crate::entity::genre::Genre;
 use crate::entity::label::LabelInfo;
 use crate::entity::recording::Recording;
@@ -217,6 +218,7 @@ pub enum ReleasePackaging {
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
 #[serde(rename_all(deserialize = "kebab-case"))]
 pub struct Media {
+    pub discs: Option<Vec<Disc>>,
     pub title: Option<String>,
     pub position: Option<u32>,
     pub track_count: u32,
