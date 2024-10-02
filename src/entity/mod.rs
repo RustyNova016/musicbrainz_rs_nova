@@ -134,7 +134,6 @@ impl Browse<'_> for Place {}
 impl Browse<'_> for Work {}
 impl Browse<'_> for Instrument {}
 impl Browse<'_> for Series {}
-impl Browse<'_> for Discid {}
 
 impl Search<'_> for Area {}
 impl Search<'_> for Annotation {}
