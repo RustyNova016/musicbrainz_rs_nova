@@ -12,3 +12,4 @@ mod release;
 mod release_group;
 mod series;
 mod work;
+mod discid;
