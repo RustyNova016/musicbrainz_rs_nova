@@ -8,9 +8,9 @@ use crate::entity::release::Release;
 pub struct Discid {
     /// See [MusicBrainz Identifier](https://musicbrainz.org/doc/MusicBrainz_Identifier).
     pub id: String,
-    pub offset_count: Option<u32>,
-    pub sectors: Option<u32>,
-    pub offsets : Option<Vec<u32>>,
+    pub offset_count: u32,
+    pub sectors: u32,
+    pub offsets : Vec<u32>,
     pub releases: Option<Vec<Release>>
 }
 
