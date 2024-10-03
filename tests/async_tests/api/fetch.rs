@@ -361,7 +361,7 @@ async fn should_get_event_by_id() {
             type_id: Some("b6ded574-b592-3f0e-b56e-5b5f06aa0678".to_string()),
             event_type: Some(EventType::Festival),
             disambiguation: Some("".to_string()),
-            time: "".to_string(),
+            time: Some("".to_string()),
             setlist: Some("".to_string()),
             life_span: Some(LifeSpan {
                 begin: Some(NaiveDate::from_ymd_opt(1989, 9, 16).unwrap()),

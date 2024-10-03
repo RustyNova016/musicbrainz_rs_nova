@@ -72,7 +72,7 @@ pub struct Event {
     pub cancelled: Option<bool>,
 
     /// The time is the start time of the event.
-    pub time: String,
+    pub time: Option<String>,
 
     /// The setlist stores a list of songs performed, optionally including links to artists and works.
     /// See the setlist documentation for syntax and examples.
