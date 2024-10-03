@@ -2,3 +2,7 @@
 mod lookup {
     include!(concat!(env!("OUT_DIR"), "/lookup.rs"));
 }
+
+mod browse {
+    include!(concat!(env!("OUT_DIR"), "/browse.rs"));
+}

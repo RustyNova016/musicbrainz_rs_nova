@@ -1,4 +1,5 @@
 use glob::glob;
+use std::borrow::Cow;
 use std::env;
 use std::fs::File;
 use std::io::Write;
@@ -36,6 +37,14 @@ macro_rules! write_test {
                     _ => unreachable!(),
                 };
 
+                let type_name = match components[0] {
+                    "lookup" => Cow::from(type_name),
+                    "browse" => Cow::from(format!(
+                        "musicbrainz_rs_nova::entity::BrowseResult<{type_name}>"
+                    )),
+                    _ => unreachable!(),
+                };
+
                 writeln!(
                     output_file,
                     include_str!($template_path),
@@ -59,6 +68,12 @@ fn main() {
     write_test!(
         out_dir.join("lookup.rs"),
         "tests/serde/data/lookup/*/*.json",
+        "./tests/serde/roundtrip.rs.in"
+    );
+
+    write_test!(
+        out_dir.join("browse.rs"),
+        "tests/serde/data/browse/*/*.json",
         "./tests/serde/roundtrip.rs.in"
     );
 }
