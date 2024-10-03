@@ -13,15 +13,16 @@ macro_rules! write_test {
             .expect("failed to read glob pattern")
             .map(|entry| entry.unwrap())
             .for_each(|path| {
-                let components = path
+                let mut components = path
                     .iter()
                     .skip(3)
-                    .map(|component| component.to_str().unwrap())
-                    .collect::<Vec<&str>>();
-                let name = components.join("_").replace(".", "_").replace("-", "_");
-                eprintln!("Writing setting test: {:?}", name);
+                    .map(|component| component.to_str().unwrap());
+                let request_type = components.next().unwrap();
+                let entity_type = components.next().unwrap();
+                let test_name = std::iter::once(entity_type).chain(components).collect::<Vec<&str>>().join("_").replace(".", "_").replace("-", "_");
+                eprintln!("Writing setting test: {:?}", test_name);
 
-                let type_name = match components[1] {
+                let type_annotation = match entity_type {
                     "annotation" => "musicbrainz_rs_nova::entity::annotation::Annotation",
                     "area" => "musicbrainz_rs_nova::entity::area::Area",
                     "artist" => "musicbrainz_rs_nova::entity::artist::Artist",
@@ -41,13 +42,13 @@ macro_rules! write_test {
                     _ => unreachable!(),
                 };
 
-                let type_name = match components[0] {
-                    "lookup" => Cow::from(type_name),
+                let type_annotation = match request_type {
+                    "lookup" => Cow::from(type_annotation),
                     "browse" => Cow::from(format!(
-                        "musicbrainz_rs_nova::entity::BrowseResult<{type_name}>"
+                        "musicbrainz_rs_nova::entity::BrowseResult<{type_annotation}>"
                     )),
                     "search" => Cow::from(format!(
-                        "musicbrainz_rs_nova::entity::search::SearchResult<{type_name}>"
+                        "musicbrainz_rs_nova::entity::search::SearchResult<{type_annotation}>"
                     )),
                     _ => unreachable!(),
                 };
@@ -55,8 +56,8 @@ macro_rules! write_test {
                 writeln!(
                     output_file,
                     include_str!($template_path),
-                    type_name = type_name,
-                    name = name,
+                    type_annotation = type_annotation,
+                    test_name = test_name,
                     filepath = path.canonicalize().unwrap().to_str().unwrap(),
                 )
                 .expect("failed to write test file");
