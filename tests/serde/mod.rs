@@ -6,3 +6,7 @@ mod lookup {
 mod browse {
     include!(concat!(env!("OUT_DIR"), "/browse.rs"));
 }
+
+mod search {
+    include!(concat!(env!("OUT_DIR"), "/search.rs"));
+}

@@ -46,6 +46,9 @@ macro_rules! write_test {
                     "browse" => Cow::from(format!(
                         "musicbrainz_rs_nova::entity::BrowseResult<{type_name}>"
                     )),
+                    "search" => Cow::from(format!(
+                        "musicbrainz_rs_nova::entity::search::SearchResult<{type_name}>"
+                    )),
                     _ => unreachable!(),
                 };
 
@@ -78,6 +81,12 @@ fn main() {
     write_test!(
         out_dir.join("browse.rs"),
         "tests/serde/data/browse/*/*.json",
+        "./tests/serde/roundtrip.rs.in"
+    );
+
+    write_test!(
+        out_dir.join("search.rs"),
+        "tests/serde/data/search/*/*.json",
         "./tests/serde/roundtrip.rs.in"
     );
 }
