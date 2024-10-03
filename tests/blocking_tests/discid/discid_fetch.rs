@@ -9,12 +9,22 @@ fn fetch_cd_id() {
         // Example disc id
         "XzPS7vW.HPHsYemQh0HBUGr8vuU-",
         // Part of multiple CD release
-        "hUbE3HKkLSkkWDvf4WliXO9OLm4-"
+        "hUbE3HKkLSkkWDvf4WliXO9OLm4-",
     ];
 
     for discid in discids {
-        assert!(Discid::fetch().id(discid).execute().is_ok(), "{} is err", discid);
+        assert!(
+            Discid::fetch().id(discid).execute().is_ok(),
+            "{} is err",
+            discid
+        );
     }
 
-    assert!(Discid::fetch().id("hUbE6HKkLSkkWDvf4WliXO9OLm4-").execute().is_err(), "The diskid does not exist");
+    assert!(
+        Discid::fetch()
+            .id("hUbE6HKkLSkkWDvf4WliXO9OLm4-")
+            .execute()
+            .is_err(),
+        "The diskid does not exist"
+    );
 }

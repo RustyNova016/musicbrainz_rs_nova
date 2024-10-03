@@ -6,6 +6,7 @@ use crate::entity::area::Area;
 use crate::entity::artist::Artist;
 use crate::entity::cdstub::CDStub;
 use crate::entity::coverart::Coverart;
+use crate::entity::discid::Discid;
 use crate::entity::event::Event;
 use crate::entity::instrument::*;
 use crate::entity::label::Label;
@@ -21,7 +22,6 @@ use crate::Path;
 use crate::{Browse, Search};
 use crate::{CoverartQuery, FetchCoverart, FetchCoverartQuery};
 use serde::Serialize;
-use crate::entity::discid::Discid;
 
 macro_rules! impl_includes {
     ($ty: ty, $(($args:ident, $inc: expr)),+) => {
