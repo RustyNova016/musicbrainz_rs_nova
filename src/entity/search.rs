@@ -5,10 +5,13 @@ use crate::entity::cdstub::CDStub;
 use crate::entity::event::Event;
 use crate::entity::instrument::Instrument;
 use crate::entity::label::Label;
+use crate::entity::place::Place;
 use crate::entity::recording::Recording;
 use crate::entity::release::Release;
 use crate::entity::release_group::ReleaseGroup;
 use crate::entity::series::Series;
+use crate::entity::tag::Tag;
+use crate::entity::url::Url;
 use crate::entity::work::Work;
 use chrono::NaiveDateTime;
 use serde::Serialize;
@@ -96,6 +99,13 @@ impl Searchable for Label {
     const ENTITIES_FIELD: &'static str = "labels";
 }
 
+impl Searchable for Place {
+    const CREATED_FIELD: &'static str = "created";
+    const COUNT_FIELD: &'static str = "count";
+    const OFFSET_FIELD: &'static str = "offset";
+    const ENTITIES_FIELD: &'static str = "places";
+}
+
 impl Searchable for Recording {
     const CREATED_FIELD: &'static str = "created";
     const COUNT_FIELD: &'static str = "count";
@@ -122,6 +132,20 @@ impl Searchable for Series {
     const COUNT_FIELD: &'static str = "count";
     const OFFSET_FIELD: &'static str = "offset";
     const ENTITIES_FIELD: &'static str = "series";
+}
+
+impl Searchable for Tag {
+    const CREATED_FIELD: &'static str = "created";
+    const COUNT_FIELD: &'static str = "count";
+    const OFFSET_FIELD: &'static str = "offset";
+    const ENTITIES_FIELD: &'static str = "tags";
+}
+
+impl Searchable for Url {
+    const CREATED_FIELD: &'static str = "created";
+    const COUNT_FIELD: &'static str = "count";
+    const OFFSET_FIELD: &'static str = "offset";
+    const ENTITIES_FIELD: &'static str = "urls";
 }
 
 impl Searchable for Work {
