@@ -10,6 +10,6 @@ use serde::{Deserialize, Serialize};
 )]
 #[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct Genre {
-    pub count: u32,
+    pub count: Option<u32>,
     pub name: String,
 }
