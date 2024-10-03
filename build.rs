@@ -22,8 +22,10 @@ macro_rules! write_test {
                 eprintln!("Writing setting test: {:?}", name);
 
                 let type_name = match components[1] {
+                    "annotation" => "musicbrainz_rs_nova::entity::annotation::Annotation",
                     "area" => "musicbrainz_rs_nova::entity::area::Area",
                     "artist" => "musicbrainz_rs_nova::entity::artist::Artist",
+                    "cdstub" => "musicbrainz_rs_nova::entity::cdstub::CDStub",
                     "event" => "musicbrainz_rs_nova::entity::event::Event",
                     "genre" => "musicbrainz_rs_nova::entity::genre::Genre",
                     "instrument" => "musicbrainz_rs_nova::entity::instrument::Instrument",
@@ -32,6 +34,8 @@ macro_rules! write_test {
                     "recording" => "musicbrainz_rs_nova::entity::recording::Recording",
                     "release" => "musicbrainz_rs_nova::entity::release::Release",
                     "release-group" => "musicbrainz_rs_nova::entity::release_group::ReleaseGroup",
+                    "series" => "musicbrainz_rs_nova::entity::series::Series",
+                    "tag" => "musicbrainz_rs_nova::entity::tag::Tag",
                     "url" => "musicbrainz_rs_nova::entity::url::Url",
                     "work" => "musicbrainz_rs_nova::entity::work::Work",
                     _ => unreachable!(),
