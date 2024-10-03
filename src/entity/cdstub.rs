@@ -18,7 +18,7 @@ pub struct CDStub {
     /// the artist name set on the CD stub
     pub artist: String,
     /// the barcode set on the CD stub
-    pub barcode: String,
+    pub barcode: Option<String>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, QueryBuilder)]
