@@ -19,6 +19,8 @@ pub struct CDStub {
     pub artist: String,
     /// the barcode set on the CD stub
     pub barcode: Option<String>,
+    /// the disambiguation string set on the CD stub
+    pub disambiguation: Option<String>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, QueryBuilder)]
