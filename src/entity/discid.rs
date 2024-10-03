@@ -1,6 +1,6 @@
-use serde::{Serialize, Deserialize};
-use crate::entity::{Include, Relationship, Subquery};
 use crate::entity::release::Release;
+use crate::entity::{Include, Relationship, Subquery};
+use serde::{Deserialize, Serialize};
 
 /// Disc ID is the code number which MusicBrainz uses to link a physical CD to a release listing.
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
@@ -10,8 +10,8 @@ pub struct Discid {
     pub id: String,
     pub offset_count: u32,
     pub sectors: u32,
-    pub offsets : Vec<u32>,
-    pub releases: Option<Vec<Release>>
+    pub offsets: Vec<u32>,
+    pub releases: Option<Vec<Release>>,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
@@ -21,7 +21,7 @@ pub struct Disc {
     pub id: String,
     pub offset_count: u32,
     pub sectors: u32,
-    pub offsets : Vec<u32>,
+    pub offsets: Vec<u32>,
 }
 
 impl_includes!(
