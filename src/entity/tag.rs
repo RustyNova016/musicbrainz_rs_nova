@@ -4,4 +4,5 @@ use serde::{Deserialize, Serialize};
 pub struct Tag {
     pub name: String,
     pub count: Option<i32>,
+    pub score: Option<i32>,
 }
