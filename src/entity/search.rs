@@ -12,18 +12,39 @@ use crate::entity::series::Series;
 use crate::entity::work::Work;
 use chrono::NaiveDateTime;
 use serde::Serialize;
+#[cfg(not(feature = "legacy_serialize"))]
+use serde::Serializer;
 
-#[derive(Debug, Serialize, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 #[cfg_attr(
     feature = "legacy_serialize",
+    derive(Serialize),
     serde(rename_all(deserialize = "kebab-case"))
 )]
-#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct SearchResult<T> {
     pub created: NaiveDateTime,
     pub count: i32,
     pub offset: i32,
     pub entities: Vec<T>,
+}
+
+#[cfg(not(feature = "legacy_serialize"))]
+impl<T> Serialize for SearchResult<T>
+where
+    T: Searchable + Serialize,
+{
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        use serde::ser::SerializeMap;
+        let mut map = serializer.serialize_map(Some(3))?;
+        map.serialize_entry(T::CREATED_FIELD, &self.created)?;
+        map.serialize_entry(T::COUNT_FIELD, &self.count)?;
+        map.serialize_entry(T::OFFSET_FIELD, &self.offset)?;
+        map.serialize_entry(T::ENTITIES_FIELD, &self.entities)?;
+        map.end()
+    }
 }
 
 pub trait Searchable {

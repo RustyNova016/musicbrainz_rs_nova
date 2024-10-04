@@ -403,7 +403,7 @@ pub enum WorkAttribute {
 /// Musical Keys are found as possible allowed values for work attribute types in `work_attribute_type_allowed_value`.  
 #[non_exhaustive]
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
-#[serde(from = "String")]
+#[serde(from = "String", into = "String")]
 pub enum MusicalKey {
     CFlatMajor,
     CFlatMinor,
@@ -525,6 +525,70 @@ impl From<String> for MusicalKey {
             "A Mixolydian" => Self::AMixolydian,
             "B Mixolydian" => Self::BMixolydian,
             k => Self::UnrecognizedKey(k.to_string()),
+        }
+    }
+}
+
+impl From<MusicalKey> for String {
+    fn from(value: MusicalKey) -> Self {
+        match value {
+            MusicalKey::CMajor => "C major".to_string(),
+            MusicalKey::CMinor => "C minor".to_string(),
+            MusicalKey::CFlatMajor => "C-flat major".to_string(),
+            MusicalKey::CFlatMinor => "C-flat minor".to_string(),
+            MusicalKey::CSharpMajor => "C-sharp major".to_string(),
+            MusicalKey::CSharpMinor => "C-sharp minor".to_string(),
+            MusicalKey::DMajor => "D major".to_string(),
+            MusicalKey::DMinor => "D minor".to_string(),
+            MusicalKey::DFlatMajor => "D-flat major".to_string(),
+            MusicalKey::DFlatMinor => "D-flat minor".to_string(),
+            MusicalKey::DSharpMajor => "D-sharp major".to_string(),
+            MusicalKey::DSharpMinor => "D-sharp minor".to_string(),
+            MusicalKey::EMajor => "E major".to_string(),
+            MusicalKey::EMinor => "E minor".to_string(),
+            MusicalKey::EFlatMajor => "E-flat major".to_string(),
+            MusicalKey::EFlatMinor => "E-flat minor".to_string(),
+            MusicalKey::ESharpMajor => "E-sharp major".to_string(),
+            MusicalKey::ESharpMinor => "E-sharp minor".to_string(),
+            MusicalKey::FMajor => "F major".to_string(),
+            MusicalKey::FMinor => "F minor".to_string(),
+            MusicalKey::FFlatMajor => "F-flat major".to_string(),
+            MusicalKey::FFlatMinor => "F-flat minor".to_string(),
+            MusicalKey::FSharpMajor => "F-sharp major".to_string(),
+            MusicalKey::FSharpMinor => "F-sharp minor".to_string(),
+            MusicalKey::GMajor => "G major".to_string(),
+            MusicalKey::GMinor => "G minor".to_string(),
+            MusicalKey::GFlatMajor => "G-flat major".to_string(),
+            MusicalKey::GFlatMinor => "G-flat minor".to_string(),
+            MusicalKey::GSharpMajor => "G-sharp major".to_string(),
+            MusicalKey::GSharpMinor => "G-sharp minor".to_string(),
+            MusicalKey::AMajor => "A major".to_string(),
+            MusicalKey::AMinor => "A minor".to_string(),
+            MusicalKey::AFlatMajor => "A-flat major".to_string(),
+            MusicalKey::AFlatMinor => "A-flat minor".to_string(),
+            MusicalKey::ASharpMajor => "A-sharp major".to_string(),
+            MusicalKey::ASharpMinor => "A-sharp minor".to_string(),
+            MusicalKey::BMajor => "B major".to_string(),
+            MusicalKey::BMinor => "B minor".to_string(),
+            MusicalKey::BFlatMajor => "B-flat major".to_string(),
+            MusicalKey::BFlatMinor => "B-flat minor".to_string(),
+            MusicalKey::BSharpMajor => "B-sharp major".to_string(),
+            MusicalKey::BSharpMinor => "B-sharp minor".to_string(),
+            MusicalKey::CDorian => "C Dorian".to_string(),
+            MusicalKey::DDorian => "D Dorian".to_string(),
+            MusicalKey::EDorian => "E Dorian".to_string(),
+            MusicalKey::FDorian => "F Dorian".to_string(),
+            MusicalKey::GDorian => "G Dorian".to_string(),
+            MusicalKey::ADorian => "A Dorian".to_string(),
+            MusicalKey::BDorian => "B Dorian".to_string(),
+            MusicalKey::CMixolydian => "C Mixolydian".to_string(),
+            MusicalKey::DMixolydian => "D Mixolydian".to_string(),
+            MusicalKey::EMixolydian => "E Mixolydian".to_string(),
+            MusicalKey::FMixolydian => "F Mixolydian".to_string(),
+            MusicalKey::GMixolydian => "G Mixolydian".to_string(),
+            MusicalKey::AMixolydian => "A Mixolydian".to_string(),
+            MusicalKey::BMixolydian => "B Mixolydian".to_string(),
+            MusicalKey::UnrecognizedKey(k) => k,
         }
     }
 }

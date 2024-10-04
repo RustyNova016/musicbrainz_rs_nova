@@ -27,6 +27,9 @@ wasm-timer = { version = "^0.2.5", optional = true }
 tokio = { version = "^1.38.0", optional = true }                                 # Using tokio for sleep_until. The std implementation is unstable, so tokio is there as a remplacement
 thiserror = "1.0.63"
 
+[build-dependencies]
+glob = "0.3.1"
+
 [dev-dependencies]
 tokio = { version = "1.38.0", features = ["macros", "rt", "rt-multi-thread"] }
 serial_test = "3.1.1"
