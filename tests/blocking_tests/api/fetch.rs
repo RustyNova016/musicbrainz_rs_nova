@@ -420,8 +420,8 @@ fn should_get_place() {
                 annotation: None,
             }),
             coordinates: Some(Coordinates {
-                latitude: 41.882_059,
-                longitude: -87.630_881,
+                latitude: 41.882_059.into(),
+                longitude: (-87.630_881).into(),
             }),
             relations: None,
             aliases: None,
