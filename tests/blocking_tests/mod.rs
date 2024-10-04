@@ -3,6 +3,7 @@ mod api;
 mod area;
 mod artist;
 mod cdstub;
+mod discid;
 mod event;
 mod instrument;
 mod label;
