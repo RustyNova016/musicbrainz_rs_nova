@@ -238,8 +238,7 @@ pub struct Media {
     pub format_id: Option<String>,
     pub format: Option<String>,
     pub tracks: Option<Vec<Track>>,
-    // TODO: pub track_offset: Option<u32>
-    // TODO: pub discs: Option<Vec<Disc>>
+    pub track_offset: Option<u32>,
 }
 
 /// A track is the way a recording is represented on a particular release (or, more exactly, on a
