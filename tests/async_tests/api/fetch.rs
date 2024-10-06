@@ -152,6 +152,7 @@ async fn should_get_recording_by_id() {
             genres: None,
             annotation: None,
             isrcs: None,
+            first_release_date: None,
         }
     );
 }
