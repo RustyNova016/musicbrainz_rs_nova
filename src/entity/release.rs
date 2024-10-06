@@ -95,6 +95,10 @@ pub struct Release {
     /// existing artists, labels, recordings, releases, release groups and works.
     pub annotation: Option<String>,
 
+    /// The [Amazon Standard Identification Number (ASIN)](https://musicbrainz.org/doc/ASIN) of the
+    /// release.
+    pub asin: Option<String>,
+
     /// The text representation on the release.
     pub text_representation: Option<ReleaseTextRepresentation>,
 }

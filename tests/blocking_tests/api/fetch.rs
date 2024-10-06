@@ -213,6 +213,7 @@ fn should_get_release() {
                 script: Some(ReleaseScript::Latn),
                 language: Some(Language::Eng),
             }),
+            asin: None,
         }
     );
 }
