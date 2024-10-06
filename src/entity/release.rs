@@ -94,33 +94,869 @@ pub struct Release {
     /// Annotations are text fields, functioning like a miniature wiki, that can be added to any
     /// existing artists, labels, recordings, releases, release groups and works.
     pub annotation: Option<String>,
+
+    /// The text representation on the release.
+    pub text_representation: Option<ReleaseTextRepresentation>,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub struct ReleaseTextRepresentation {
     /// The language a release's track list is written in. The possible values are taken from the ISO
     /// 639-3 standard.
-    pub language: Language,
+    pub language: Option<Language>,
     /// The script used to write the release's track list. The possible values are taken from the
     /// ISO 15924 standard.
-    pub script: ReleaseScript,
+    pub script: Option<ReleaseScript>,
 }
 
 /// The script used to write the release's track list. The possible values are taken from the
 /// [ISO 15924](https://en.wikipedia.org/wiki/ISO_15924) standard.
+///
+/// The values for this enum have been generated with the following command:
+///
+/// ```bash
+/// $ curl -s https://musicbrainz.org/statistics/languages-scripts | \
+///     grep -Eo '<td>[^<]*</td><td class="t"><a href="https://musicbrainz.org/search\?query=script%3A%22[^"]*%22' | \
+///     sort | \
+///     sed 's,<td>\([^<]*\)</td><td class="t"><a href="https://musicbrainz.org/search?query=script%3A%22\([^"]*\)%22,\/\/\/ \1\n\2\,,'
+/// ```
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
 pub enum ReleaseScript {
-    /* TODO: we need to test all posible values to build the enum see https://musicbrainz.org/doc/Release */
-    /// ## Latin (also known as Roman or, incorrectly, "English")
+    /// Arabic
+    Arab,
+    /// Armenian
+    Armn,
+    /// Bengali
+    Beng,
+    /// Braille
+    Brai,
+    /// Buginese
+    Bugi,
+    /// Canadian Syllabics
+    Cans,
+    /// Cherokee
+    Cher,
+    /// Coptic
+    Copt,
+    /// Cuneiform, Sumero-Akkadian
+    Xsux,
+    /// Cyrillic
+    Cyrl,
+    /// Devanagari
+    Deva,
+    /// Egyptian hieroglyphs
+    Egyp,
+    /// Ethiopic
+    Ethi,
+    /// Georgian
+    Geor,
+    /// Gothic
+    Goth,
+    /// Greek
+    Grek,
+    /// Gujarati
+    Gujr,
+    /// Gurmukhi
+    Guru,
+    /// Hangul
+    Hang,
+    /// Han (Hanzi, Kanji, Hanja)
+    Hani,
+    /// Han (Simplified variant)
+    Hans,
+    /// Han (Traditional variant)
+    Hant,
+    /// Hebrew
+    Hebr,
+    /// Hiragana
+    Hira,
+    /// Japanese syllabaries
+    Hrkt,
+    /// Japanese
+    Jpan,
+    /// Kannada
+    Knda,
+    /// Katakana
+    Kana,
+    /// Khmer
+    Khmr,
+    /// Korean
+    Kore,
+    /// Lao
+    Laoo,
+    /// Latin (also known as Roman or, incorrectly, "English")
+    ///
     /// Latin is the most common script, and usually the correct choice. It is used
     /// for all Western European languages, and many others. It is also the most common script used for transliterations.
     Latn,
+    /// Malayalam
+    Mlym,
+    /// Mathematical notation
+    Zmth,
+    /// [Multiple scripts]
+    Qaaa,
+    /// Myanmar
+    Mymr,
+    /// Old Turkic
+    Orkh,
+    /// Oriya
+    Orya,
+    /// Phags-pa
+    Phag,
+    /// Runic
+    Runr,
+    /// Sinhala
+    Sinh,
+    /// Symbols
+    Zsym,
+    /// Syriac
+    Syrc,
+    /// Tamil
+    Taml,
+    /// Telugu
+    Telu,
+    /// Thai
+    Thai,
+    /// Tibetan
+    Tibt,
+    /// Vai
+    Vaii,
 }
 
-/* TODO: we need to test all posible values to build the enum see https://musicbrainz.org/doc/Release */
+/// The language the release title and track titles are written in. The possible values are taken
+/// from the [ISO 639-3](https://en.wikipedia.org/wiki/ISO_639-3) standard.
+///
+/// The values for this enum have been generated with the following command:
+///
+/// ```bash
+/// $ curl -s https://musicbrainz.org/statistics/languages-scripts | \
+///     grep -Eo '<td>[^<]*</td><td class="t"><a href="https://musicbrainz.org/search\?query=lang%3A%22[^"]*%22' | \
+///     sort | \
+///     sed 's,<td>\([^<]*\)</td><td class="t"><a href="https://musicbrainz.org/search?query=lang%3A%22\([^"]*\)%22,\/\/\/ \1\n\u\2\,,'
+/// ```
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
+#[serde(rename_all = "lowercase")]
 pub enum Language {
+    /// Abkhazian
+    Abk,
+    /// Achinese
+    Ace,
+    /// Acoli
+    Ach,
+    /// Adangme
+    Ada,
+    /// Adyghe
+    Ady,
+    /// Afar
+    Aar,
+    /// Afrikaans
+    Afr,
+    /// Ainu
+    Ain,
+    /// Akan
+    Aka,
+    /// Akkadian
+    Akk,
+    /// Albanian
+    Sqi,
+    /// Algonquin
+    Alq,
+    /// Amharic
+    Amh,
+    /// Angika
+    Anp,
+    /// Arabic
+    Ara,
+    /// Aragonese
+    Arg,
+    /// Arapaho
+    Arp,
+    /// Ardhamāgadhī Prākrit
+    Pka,
+    /// Armenian
+    Hye,
+    /// Aromanian
+    Rup,
+    /// [Artificial (Other)]
+    Qaa,
+    /// Assamese
+    Asm,
+    /// Asturian
+    Ast,
+    /// Atikamekw
+    Atj,
+    /// Avaric
+    Ava,
+    /// Awadhi
+    Awa,
+    /// Aymara
+    Aym,
+    /// Azerbaijani
+    Aze,
+    /// Baeggu
+    Bvd,
+    /// Balinese
+    Ban,
+    /// Baluchi
+    Bal,
+    /// Bambara
+    Bam,
+    /// Basa
+    Bas,
+    /// Basque
+    Eus,
+    /// Bavarian
+    Bar,
+    /// Beja
+    Bej,
+    /// Belarusian
+    Bel,
+    /// Bemba
+    Bem,
+    /// Bengali
+    Ben,
+    /// Bhojpuri
+    Bho,
+    /// Bikol
+    Bik,
+    /// Bini
+    Bin,
+    /// Bislama
+    Bis,
+    /// Bosnian
+    Bos,
+    /// Braj
+    Bra,
+    /// Breton
+    Bre,
+    /// Buamu
+    Box,
+    /// Buginese
+    Bug,
+    /// Bulgarian
+    Bul,
+    /// Buriat
+    Bua,
+    /// Burmese
+    Mya,
+    /// Burushaski
+    Bsk,
+    /// Caddo
+    Cad,
+    /// Cajun French
+    Frc,
+    /// Catalan
+    Cat,
+    /// Cebuano
+    Ceb,
+    /// Celtiberian
+    Xce,
+    /// Central Okinawan
+    Ryu,
+    /// Central Yupik
+    Esu,
+    /// Chamorro
+    Cha,
+    /// Chechen
+    Che,
+    /// Cherokee
+    Chr,
+    /// Chichewa
+    Nya,
+    /// Chinese
+    Zho,
+    /// Church Slavic
+    Chu,
+    /// Chuvash
+    Chv,
+    /// Coptic
+    Cop,
+    /// Cornish
+    Cor,
+    /// Corsican
+    Cos,
+    /// Creek
+    Mus,
+    /// Cree
+    Cre,
+    /// Crimean Tatar
+    Crh,
+    /// Croatian
+    Hrv,
+    /// Czech
+    Ces,
+    /// Danish
+    Dan,
+    /// Delaware
+    Del,
+    /// Divehi
+    Div,
+    /// Duala
+    Dua,
+    /// Dutch, Middle (ca.1050-1350)
+    Dum,
+    /// Dutch
+    Nld,
+    /// Dzongkha
+    Dzo,
+    /// Eastern Arrernte
+    Aer,
+    /// Egyptian (Ancient)
+    Egy,
+    /// Elamite
+    Elx,
+    /// English, Middle (1100-1500)
+    Enm,
+    /// English, Old (ca.450-1100)
+    Ang,
+    /// English
     Eng,
+    /// Erzya
+    Myv,
+    /// Esperanto
+    Epo,
+    /// Estonian
+    Est,
+    /// Ewe
+    Ewe,
+    /// Fang
+    Fan,
+    /// Fanti
+    Fat,
+    /// Faroese
+    Fao,
+    /// Fijian
+    Fij,
+    /// Filipino
+    Fil,
+    /// Finnish
+    Fin,
+    /// Fon
+    Fon,
+    /// French, Old (842-ca.1400)
+    Fro,
+    /// French
+    Fra,
+    /// Frisian, Eastern
+    Frs,
+    /// Frisian, Northern
+    Frr,
+    /// Frisian, Western
+    Fry,
+    /// Friulian
+    Fur,
+    /// Fulah
+    Ful,
+    /// Galician
+    Glg,
+    /// Ganda
+    Lug,
+    /// Garifuna
+    Cab,
+    /// Ga
+    Gaa,
+    /// Geez
+    Gez,
+    /// Georgian
+    Kat,
+    /// German, Low
+    Nds,
+    /// German, Middle High (ca.1050-1500)
+    Gmh,
+    /// German, Old High (ca.750-1050)
+    Goh,
+    /// German, Swiss
+    Gsw,
+    /// German
+    Deu,
+    /// Gondi
+    Gon,
+    /// Gothic
+    Got,
+    /// Greek, Ancient
+    Grc,
+    /// Greek
+    Ell,
+    /// Greenlandic
+    Kal,
+    /// Gronings
+    Gos,
+    /// Guadeloupean Creole French
+    Gcf,
+    /// Guarani
+    Grn,
+    /// Gujarati
+    Guj,
+    /// Gupapuyngu
+    Guf,
+    /// Guyanese Creole English
+    Gyn,
+    /// Haitian Creole
+    Hat,
+    /// Hausa
+    Hau,
+    /// Hawaiian
+    Haw,
+    /// Hebrew
+    Heb,
+    /// Herero
+    Her,
+    /// Hindi
+    Hin,
+    /// Hiri Motu
+    Hmo,
+    /// Hmong
+    Hmn,
+    /// Hungarian
+    Hun,
+    /// Icelandic
+    Isl,
+    /// Igbo
+    Ibo,
+    /// Iloko
+    Ilo,
+    /// Indonesian
+    Ind,
+    /// Ingrian
+    Izh,
+    /// Innu
+    Moe,
+    /// Inuktitut
+    Iku,
+    /// Irish
+    Gle,
+    /// Italian
+    Ita,
+    /// Jamaican Creole English
+    Jam,
+    /// Japanese
+    Jpn,
+    /// Javanese
+    Jav,
+    /// Jewish Babylonian Aramaic (ca. 200-1200 CE)
+    Tmr,
+    /// Kabardian
+    Kbd,
+    /// Kabuverdianu
+    Kea,
+    /// Kabyle
+    Kab,
+    /// Kalmyk
+    Xal,
+    /// Kannada
+    Kan,
+    /// Karachay-Balkar
+    Krc,
+    /// Karelian
+    Krl,
+    /// Kashmiri
+    Kas,
+    /// Kazakh
+    Kaz,
+    /// Khanty
+    Kca,
+    /// Khasi
+    Kha,
+    /// Khmer, Central
+    Khm,
+    /// Kikuyu
+    Kik,
+    /// Kimbundu
+    Kmb,
+    /// Kinyarwanda
+    Kin,
+    /// Kirghiz
+    Kir,
+    /// Klingon
+    Tlh,
+    /// Kölsch
+    Ksh,
+    /// Komi
+    Kom,
+    /// Kongo
+    Kon,
+    /// Konkani
+    Kok,
+    /// Korean
+    Kor,
+    /// Kunigami
+    Xug,
+    /// Kurdish
+    Kur,
+    /// Ladino
+    Lad,
+    /// Ladin
+    Lld,
+    /// Lakota
+    Lkt,
+    /// Lao
+    Lao,
+    /// Latin
+    Lat,
+    /// Latvian
+    Lav,
+    /// Laz
+    Lzz,
+    /// Limburgish
+    Lim,
+    /// Lingala
+    Lin,
+    /// Lithuanian
+    Lit,
+    /// Liv
+    Liv,
+    /// Lojban
+    Jbo,
+    /// Louisiana Creole French
+    Lou,
+    /// Luba-Katanga
+    Lub,
+    /// Luba-Lulua
+    Lua,
+    /// Luo
+    Luo,
+    /// Luxembourgish
+    Ltz,
+    /// Luyia
+    Luy,
+    /// Macedonian
+    Mkd,
+    /// Madurese
+    Mad,
+    /// Malagasy
+    Mlg,
+    /// Malayalam
+    Mal,
+    /// Malay
+    Msa,
+    /// Maltese
+    Mlt,
+    /// Manchu
+    Mnc,
+    /// Mandarin Chinese
+    Cmn,
+    /// Mandar
+    Mdr,
+    /// Mandingo
+    Man,
+    /// Mansi
+    Mns,
+    /// Manx
+    Glv,
+    /// Maori
+    Mri,
+    /// Mapudungun
+    Arn,
+    /// Marathi
+    Mar,
+    /// Mari
+    Chm,
+    /// Marwari
+    Mwr,
+    /// Mende
+    Men,
+    /// Mina (Cameroon)
+    Hna,
+    /// Min Nan Chinese
+    Nan,
+    /// Miyako
+    Mvi,
+    /// Mohawk
+    Moh,
+    /// Moksha
+    Mdf,
+    /// Mongolian
+    Mon,
+    /// Mongo
+    Lol,
+    /// Mossi
+    Mos,
+    /// [Multiple languages]
+    Mul,
+    /// Nauru
+    Nau,
+    /// Navajo
+    Nav,
+    /// Ndebele, North
+    Nde,
+    /// Ndebele, South
+    Nbl,
+    /// Ndonga
+    Ndo,
+    /// Neapolitan
+    Nap,
+    /// Nepal Bhasa
+    New,
+    /// Nepali
+    Nep,
+    /// Nhengatu
+    Yrl,
+    /// Nogai
+    Nog,
+    /// [No linguistic content]
+    Zxx,
+    /// Norn
+    Nrn,
+    /// Norse, Old
+    Non,
+    /// Norwegian Bokmål
+    Nob,
+    /// Norwegian Nynorsk
+    Nno,
+    /// Norwegian
+    Nor,
+    /// Nzima
+    Nzi,
+    /// Occitan
+    Oci,
+    /// Oriya
+    Ori,
+    /// Oromo
+    Orm,
+    /// Osage
+    Osa,
+    /// Pahlavi
+    Pal,
+    /// Papiamento
+    Pap,
+    /// Persian
+    Fas,
+    /// Pitjantjatjara
+    Pjt,
+    /// Pohnpeian
+    Pon,
+    /// Polish
+    Pol,
+    /// Portuguese
+    Por,
+    /// Provençal, Old (to 1500)
+    Pro,
+    /// Prussian
+    Prg,
+    /// Pulaar
+    Fuc,
+    /// Punjabi
+    Pan,
+    /// Pushto
+    Pus,
+    /// Puyuma
+    Pyu,
+    /// Quechua
+    Que,
+    /// Quenya
+    Qya,
+    /// Rajasthani
+    Raj,
+    /// Rapanui
+    Rap,
+    /// Rarotongan
+    Rar,
+    /// Réunion Creole French
+    Rcf,
+    /// Romanian
+    Ron,
+    /// Romansh
+    Roh,
+    /// Romany
+    Rom,
+    /// Rundi
+    Run,
+    /// Russian
+    Rus,
+    /// Rusyn
+    Rue,
+    /// Sami, Inari
+    Smn,
+    /// Sami, Lule
+    Smj,
+    /// Sami, Northern
+    Sme,
+    /// Sami, Skolt
+    Sms,
+    /// Sami, Southern
+    Sma,
+    /// Samoan
+    Smo,
+    /// Sango
+    Sag,
+    /// Sanskrit
+    San,
+    /// Santali
+    Sat,
+    /// Sardinian
+    Srd,
+    /// Scots
+    Sco,
+    /// Scottish Gaelic
+    Gla,
+    /// Sea Island Creole English
+    Gul,
+    /// Serbian
+    Srp,
+    /// Serer
+    Srr,
+    /// Shan
+    Shn,
+    /// Shona
+    Sna,
+    /// Sicilian
+    Scn,
+    /// Sindarin
+    Sjn,
+    /// Sindhi
+    Snd,
+    /// Sinhala
+    Sin,
+    /// Slovak
+    Slk,
+    /// Slovenian
+    Slv,
+    /// Somali
+    Som,
+    /// Soninke
+    Snk,
+    /// Sorbian, Upper
+    Hsb,
+    /// Sotho, Northern
+    Nso,
+    /// Sotho, Southern
+    Sot,
+    /// Southern Altai
+    Alt,
+    /// Spanish
+    Spa,
+    /// Sranan Tongo
+    Srn,
+    /// Sundanese
+    Sun,
+    /// Susu
+    Sus,
+    /// Svan
+    Sva,
+    /// Swahili
+    Swa,
+    /// Swati
+    Ssw,
+    /// Swedish
+    Swe,
+    /// Syriac
+    Syr,
+    /// Tagalog
+    Tgl,
+    /// Tahitian
+    Tah,
+    /// Tajik
+    Tgk,
+    /// Tamashek
+    Tmh,
+    /// Tamil
+    Tam,
+    /// Tatar
+    Tat,
+    /// Telugu
+    Tel,
+    /// Tetum
+    Tet,
+    /// Thai
+    Tha,
+    /// Tibetan
+    Bod,
+    /// Tigrinya
+    Tir,
+    /// Tokelau
+    Tkl,
+    /// Toki Pona
+    Tok,
+    /// Tok Pisin
+    Tpi,
+    /// Tonga (Tonga Islands)
+    Ton,
+    /// Tsonga
+    Tso,
+    /// Tswana
+    Tsn,
+    /// Turkish, Ottoman
+    Ota,
+    /// Turkish
+    Tur,
+    /// Turkmen
+    Tuk,
+    /// Tuvalu
+    Tvl,
+    /// Tuvinian
+    Tyv,
+    /// Twi
+    Twi,
+    /// Udmurt
+    Udm,
+    /// Uighur
+    Uig,
+    /// Ukrainian
+    Ukr,
+    /// Umbundu
+    Umb,
+    /// Ume Sami
+    Sju,
+    /// Urdu
+    Urd,
+    /// Uzbek
+    Uzb,
+    /// Vai
+    Vai,
+    /// Venda
+    Ven,
+    /// Veps
+    Vep,
+    /// Vietnamese
+    Vie,
+    /// Võro
+    Vro,
+    /// Votic
+    Vot,
+    /// Walloon
+    Wln,
+    /// Walser
+    Wae,
+    /// Warlpiri
+    Wbp,
+    /// Washo
+    Was,
+    /// Welsh
+    Cym,
+    /// Western Arrarnta
+    Are,
+    /// Wolaitta
+    Wal,
+    /// Wolof
+    Wol,
+    /// Wyandot
+    Wya,
+    /// Xhosa
+    Xho,
+    /// Yaeyama
+    Rys,
+    /// Yakut
+    Sah,
+    /// Yiddish
+    Yid,
+    /// Yoron
+    Yox,
+    /// Yoruba
+    Yor,
+    /// Yucateco
+    Yua,
+    /// Yue Chinese
+    Yue,
+    /// Zapotec
+    Zap,
+    /// Zarma
+    Dje,
+    /// Zaza
+    Zza,
+    /// Zulu
+    Zul,
+    /// Zuni
+    Zun,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
