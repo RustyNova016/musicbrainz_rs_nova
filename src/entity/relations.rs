@@ -61,9 +61,9 @@ pub struct Relation {
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
 #[cfg_attr(
     feature = "legacy_serialize",
-    serde(rename_all(deserialize = "kebab-case"))
+    serde(rename_all(deserialize = "snake_case"))
 )]
-#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "snake_case"))]
 pub enum RelationContent {
     // see https://rust-lang.github.io/rust-clippy/master/index.html#large_enum_variant
     Artist(Box<Artist>),
