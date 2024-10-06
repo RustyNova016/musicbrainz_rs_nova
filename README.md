@@ -212,8 +212,8 @@ fn main() {
 
 ### Custom user agent
 
-You can set your application user-agent as recommended in the
-[musicbrainz documentation](https://musicbrainz.org/doc/XML_Web_Service/Rate_Limiting#User-Agent) :
+By default, the user agent will be set to `musicbrainz_rs_nova/<version>`.
+To comply with [MB's API rules](https://musicbrainz.org/doc/MusicBrainz_API#Application_rate_limiting_and_identification), you should set this to a custom string that identifies your application:
 
 ```rust
 use musicbrainz_rs_nova::entity::artist::Artist;
