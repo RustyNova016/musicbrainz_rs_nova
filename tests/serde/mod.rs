@@ -10,3 +10,29 @@ mod browse {
 mod search {
     include!(concat!(env!("OUT_DIR"), "/search.rs"));
 }
+
+mod entity {
+    #[test]
+    fn test_recording_fields() {
+        use musicbrainz_rs_nova::entity::recording::Recording;
+        let recording: Recording = serde_json::from_str(include_str!(
+            "data/lookup/recording/b9ad642e-b012-41c7-b72a-42cf4911f9ff.json"
+        ))
+        .unwrap();
+        assert!(recording.artist_credit.is_some_and(|x| x.len() == 2));
+        assert_eq!(recording.isrcs, Some(vec!("JPB600760301".to_string())));
+        assert_eq!(recording.title, "LAST ANGEL".to_string());
+        assert_eq!(recording.video, Some(false));
+        assert!(recording.releases.is_some_and(|x| x.len() == 15));
+        assert_eq!(recording.disambiguation, Some("".to_string()));
+        assert_eq!(
+            recording.first_release_date,
+            Some(chrono::NaiveDate::from_ymd_opt(2007, 11, 7).unwrap())
+        );
+        assert_eq!(
+            recording.id,
+            "b9ad642e-b012-41c7-b72a-42cf4911f9ff".to_string()
+        );
+        assert_eq!(recording.length, Some(230240));
+    }
+}
