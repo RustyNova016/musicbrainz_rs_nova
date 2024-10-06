@@ -35,4 +35,50 @@ mod entity {
         );
         assert_eq!(recording.length, Some(230240));
     }
+
+    #[test]
+    fn test_release_fields() {
+        use musicbrainz_rs_nova::entity::release::*;
+        let release: Release = serde_json::from_str(include_str!(
+            "data/lookup/release//b1dc9838-adf3-43f2-93f9-802b46e5fe59.json"
+        ))
+        .unwrap();
+        assert!(release.label_info.is_some_and(|x| x.len() == 1));
+        assert_eq!(
+            release.text_representation,
+            Some(ReleaseTextRepresentation {
+                script: Some(ReleaseScript::Latn),
+                language: Some(Language::Eng),
+            })
+        );
+        // TODO: Add support for collections field.
+        // See <https://github.com/RustyNova016/musicbrainz_rs_nova/issues/47>.
+        assert_eq!(
+            release.id,
+            "b1dc9838-adf3-43f2-93f9-802b46e5fe59".to_string()
+        );
+        assert_eq!(release.asin, Some("B00005NEKI".to_string()));
+        assert!(release.aliases.is_some_and(|x| x.len() == 1));
+        assert!(release.artist_credit.is_some_and(|x| x.len() == 1));
+        // TODO: Add support for cover-art-archive field.
+        // See <https://github.com/RustyNova016/musicbrainz_rs_nova/issues/46>.
+        assert_eq!(
+            release.status_id,
+            Some("4e304316-386d-3409-af2e-78857eec5cfe".to_string())
+        );
+        assert!(release.genres.is_some_and(|x| x.is_empty()));
+        assert_eq!(release.status, Some(ReleaseStatus::Official));
+        assert!(release.relations.is_some_and(|x| x.len() == 1));
+        assert_eq!(
+            release.packaging_id,
+            Some("ec27701a-4a22-37f4-bfac-6616e0f9750a".to_string())
+        );
+        assert!(release.media.is_some_and(|x| x.len() == 1));
+        assert_eq!(release.quality, Some(ReleaseQuality::Normal));
+        assert!(release.tags.is_some_and(|x| x.is_empty()));
+        assert_eq!(release.barcode, Some("08464670532".to_string()));
+        assert!(release.release_group.is_some());
+        assert_eq!(release.title, "A Hot Summer Night in ’59".to_string());
+        assert_eq!(release.annotation, None);
+    }
 }
