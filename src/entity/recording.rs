@@ -59,6 +59,10 @@ pub struct Recording {
     /// Annotations are text fields, functioning like a miniature wiki, that can be added to any
     /// existing artists, labels, recordings, releases, release groups and works.
     pub annotation: Option<String>,
+    /// The first release date of the recording.
+    #[serde(deserialize_with = "date_format::deserialize_opt")]
+    #[serde(default)]
+    pub first_release_date: Option<NaiveDate>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, QueryBuilder)]

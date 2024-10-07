@@ -146,6 +146,7 @@ fn should_get_recording_by_id() {
             genres: None,
             annotation: None,
             isrcs: None,
+            first_release_date: None,
         }
     );
 }
@@ -208,6 +209,11 @@ fn should_get_release() {
             aliases: None,
             genres: None,
             annotation: None,
+            text_representation: Some(ReleaseTextRepresentation {
+                script: Some(ReleaseScript::Latn),
+                language: Some(Language::Eng),
+            }),
+            asin: None,
         }
     );
 }
