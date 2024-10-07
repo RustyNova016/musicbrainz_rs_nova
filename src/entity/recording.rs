@@ -22,7 +22,11 @@ use lucene_query_builder::QueryBuilder;
 /// Generally, the audio represented by a recording corresponds to the audio at a stage in the
 /// production process before any final mastering but after any editing or mixing.
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    serde(rename_all(deserialize = "kebab-case"))
+)]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct Recording {
     /// See [MusicBrainz Identifier](https://musicbrainz.org/doc/MusicBrainz_Identifier).
     pub id: String,
@@ -55,6 +59,10 @@ pub struct Recording {
     /// Annotations are text fields, functioning like a miniature wiki, that can be added to any
     /// existing artists, labels, recordings, releases, release groups and works.
     pub annotation: Option<String>,
+    /// The first release date of the recording.
+    #[serde(deserialize_with = "date_format::deserialize_opt")]
+    #[serde(default)]
+    pub first_release_date: Option<NaiveDate>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, QueryBuilder)]
@@ -151,6 +159,7 @@ impl_includes!(
     Recording,
     (with_artists, Include::Subquery(Subquery::Artists)),
     (with_releases, Include::Subquery(Subquery::Releases)),
+    (with_medias, Include::Subquery(Subquery::Media)),
     (with_tags, Include::Subquery(Subquery::Tags)),
     (with_aliases, Include::Subquery(Subquery::Aliases)),
     (with_genres, Include::Subquery(Subquery::Genres)),

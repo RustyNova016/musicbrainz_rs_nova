@@ -7,9 +7,15 @@ use crate::entity::relations::Relation;
 use crate::entity::tag::Tag;
 use crate::entity::BrowseBy;
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
+use std::fmt;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    serde(rename_all(deserialize = "kebab-case"))
+)]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct Place {
     /// See [MusicBrainz Identifier](https://musicbrainz.org/doc/MusicBrainz_Identifier).
     pub id: String,
@@ -45,8 +51,61 @@ pub struct Place {
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
 pub struct Coordinates {
-    pub latitude: f64,
-    pub longitude: f64,
+    pub latitude: Coordinate,
+    pub longitude: Coordinate,
+}
+
+/// Place coordinate (e.g., latitude or longitude).
+///
+/// The MusicBrainz API either returns a string or a floating point number. This enum abstracts
+/// that so that the user does not have to care about this distinction.
+#[derive(Debug, PartialEq, Clone)]
+pub enum Coordinate {
+    StringCoordinate(String),
+    FloatCoordinate(f64),
+}
+
+impl Coordinate {
+    pub fn to_cow_str(&self) -> Cow<'_, str> {
+        match &self {
+            Self::StringCoordinate(value) => Cow::from(value.as_str()),
+            Self::FloatCoordinate(value) => Cow::from(value.to_string()),
+        }
+    }
+
+    pub fn to_f64(&self) -> Option<f64> {
+        match &self {
+            Self::StringCoordinate(value) => value.as_str().parse::<f64>().ok(),
+            Self::FloatCoordinate(value) => (*value).into(),
+        }
+    }
+}
+
+impl fmt::Display for Coordinate {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match &self {
+            Self::StringCoordinate(value) => value.fmt(f),
+            Self::FloatCoordinate(value) => value.fmt(f),
+        }
+    }
+}
+
+impl From<String> for Coordinate {
+    fn from(value: String) -> Self {
+        Self::StringCoordinate(value)
+    }
+}
+
+impl From<&str> for Coordinate {
+    fn from(value: &str) -> Self {
+        Self::StringCoordinate(value.to_string())
+    }
+}
+
+impl From<f64> for Coordinate {
+    fn from(value: f64) -> Self {
+        Self::FloatCoordinate(value)
+    }
 }
 
 /// The type of a MusicBrainz place entity.

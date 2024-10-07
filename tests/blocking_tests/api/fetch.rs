@@ -146,6 +146,7 @@ fn should_get_recording_by_id() {
             genres: None,
             annotation: None,
             isrcs: None,
+            first_release_date: None,
         }
     );
 }
@@ -208,6 +209,11 @@ fn should_get_release() {
             aliases: None,
             genres: None,
             annotation: None,
+            text_representation: Some(ReleaseTextRepresentation {
+                script: Some(ReleaseScript::Latn),
+                language: Some(Language::Eng),
+            }),
+            asin: None,
         }
     );
 }
@@ -343,7 +349,7 @@ fn should_get_event_by_id() {
             type_id: Some("b6ded574-b592-3f0e-b56e-5b5f06aa0678".to_string()),
             event_type: Some(EventType::Festival),
             disambiguation: Some("".to_string()),
-            time: "".to_string(),
+            time: Some("".to_string()),
             setlist: Some("".to_string()),
             life_span: Some(LifeSpan {
                 begin: Some(NaiveDate::from_ymd_opt(1989, 9, 16).unwrap()),
@@ -420,8 +426,8 @@ fn should_get_place() {
                 annotation: None,
             }),
             coordinates: Some(Coordinates {
-                latitude: 41.882_059,
-                longitude: -87.630_881,
+                latitude: 41.882_059.into(),
+                longitude: (-87.630_881).into(),
             }),
             relations: None,
             aliases: None,

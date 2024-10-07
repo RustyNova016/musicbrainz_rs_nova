@@ -1,3 +1,5 @@
+mod serde;
+
 #[cfg(feature = "async")]
 mod async_tests;
 

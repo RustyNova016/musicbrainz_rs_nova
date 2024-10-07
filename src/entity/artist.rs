@@ -20,7 +20,11 @@ use serde::{Deserialize, Serialize};
 /// (like a photographer, an illustrator, or a poet whose writings are set to music), or even a
 /// fictional character. For some other special cases, see special purpose artists.
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone, Default)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    serde(rename_all(deserialize = "kebab-case"))
+)]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 #[serde(default)]
 pub struct Artist {
     /// See [MusicBrainz Identifier](https://musicbrainz.org/doc/MusicBrainz_Identifier).
@@ -217,6 +221,7 @@ impl_includes!(
     Artist,
     (with_recordings, Include::Subquery(Subquery::Recordings)),
     (with_releases, Include::Subquery(Subquery::Releases)),
+    (with_medias, Include::Subquery(Subquery::Media)),
     (
         with_releases_and_discids,
         Include::Subquery(Subquery::ReleasesWithDiscIds)

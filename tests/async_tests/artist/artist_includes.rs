@@ -183,6 +183,22 @@ async fn should_get_artist_release_relations() {
 
 #[tokio::test]
 #[serial_test::serial]
+async fn should_get_artist_media() {
+    let john_lee_hooker = Artist::fetch()
+        .id("b0122194-c49a-46a1-ade7-84d1d76bd8e9")
+        .with_releases()
+        .with_medias()
+        .execute()
+        .await
+        .unwrap();
+
+    let relations = john_lee_hooker.releases.unwrap();
+
+    assert!(relations.iter().all(|rel| rel.media.is_some()));
+}
+
+#[tokio::test]
+#[serial_test::serial]
 async fn should_get_artist_series_relations() {
     let john_lee_hooker = Artist::fetch()
         .id("b0122194-c49a-46a1-ade7-84d1d76bd8e9")

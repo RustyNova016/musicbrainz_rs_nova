@@ -6,6 +6,7 @@ use crate::entity::area::Area;
 use crate::entity::artist::Artist;
 use crate::entity::cdstub::CDStub;
 use crate::entity::coverart::Coverart;
+use crate::entity::discid::Discid;
 use crate::entity::event::Event;
 use crate::entity::instrument::*;
 use crate::entity::label::Label;
@@ -21,6 +22,8 @@ use crate::Path;
 use crate::{Browse, Search};
 use crate::{CoverartQuery, FetchCoverart, FetchCoverartQuery};
 use serde::Serialize;
+#[cfg(not(feature = "legacy_serialize"))]
+use serde::Serializer;
 
 macro_rules! impl_includes {
     ($ty: ty, $(($args:ident, $inc: expr)),+) => {
@@ -88,6 +91,7 @@ pub mod artist;
 pub mod artist_credit;
 pub mod cdstub;
 pub mod coverart;
+pub mod discid;
 pub mod event;
 pub mod genre;
 pub mod instrument;
@@ -117,6 +121,7 @@ impl Fetch<'_> for Instrument {}
 impl Fetch<'_> for Place {}
 impl Fetch<'_> for Series {}
 impl Fetch<'_> for Url {}
+impl Fetch<'_> for Discid {}
 
 impl_fetchcoverart!(Release, ReleaseGroup);
 
@@ -229,6 +234,12 @@ impl Path<'_> for CDStub {
     }
 }
 
+impl Path<'_> for Discid {
+    fn path() -> &'static str {
+        "discid"
+    }
+}
+
 #[derive(Debug, PartialEq, Clone)]
 #[allow(unused)]
 pub(crate) enum Include {
@@ -269,6 +280,7 @@ pub(crate) enum Subquery {
     Series,
     Instruments,
     ISRCs,
+    Media,
 }
 
 impl Subquery {
@@ -295,6 +307,7 @@ impl Subquery {
             Subquery::Instruments => "instruments",
             Subquery::Series => "series",
             Subquery::ISRCs => "isrcs",
+            Subquery::Media => "media",
         }
     }
 }
@@ -373,12 +386,34 @@ impl BrowseBy {
 
 /// Browse query result are wrapped in this generic struct and paired with a custom
 /// Deserialize implementation to avoid reimplementing a custom deserializer for every entity.
-#[derive(Debug, Serialize, PartialEq, Eq, Clone)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[derive(Debug, PartialEq, Eq, Clone)]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    derive(Serialize),
+    serde(rename_all(deserialize = "kebab-case"))
+)]
 pub struct BrowseResult<T> {
     pub count: i32,
     pub offset: i32,
     pub entities: Vec<T>,
+}
+
+#[cfg(not(feature = "legacy_serialize"))]
+impl<T> Serialize for BrowseResult<T>
+where
+    T: Browsable + Serialize,
+{
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        use serde::ser::SerializeMap;
+        let mut map = serializer.serialize_map(Some(3))?;
+        map.serialize_entry(T::COUNT_FIELD, &self.count)?;
+        map.serialize_entry(T::OFFSET_FIELD, &self.offset)?;
+        map.serialize_entry(T::ENTITIES_FIELD, &self.entities)?;
+        map.end()
+    }
 }
 
 pub trait Browsable {

@@ -18,7 +18,11 @@ use std::collections::HashMap;
 /// Relationships are a way to represent all the different ways in which entities are connected to
 /// each other and to URLs outside MusicBrainz.
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    serde(rename_all(deserialize = "kebab-case"))
+)]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "kebab-case"))]
 pub struct Relation {
     #[serde(default)]
     #[serde(deserialize_with = "date_format::deserialize_opt")]
@@ -55,7 +59,11 @@ pub struct Relation {
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Clone)]
-#[serde(rename_all(deserialize = "kebab-case"))]
+#[cfg_attr(
+    feature = "legacy_serialize",
+    serde(rename_all(deserialize = "snake_case"))
+)]
+#[cfg_attr(not(feature = "legacy_serialize"), serde(rename_all = "snake_case"))]
 pub enum RelationContent {
     // see https://rust-lang.github.io/rust-clippy/master/index.html#large_enum_variant
     Artist(Box<Artist>),
