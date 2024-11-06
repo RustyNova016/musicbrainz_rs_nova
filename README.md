@@ -8,9 +8,31 @@
 [crates.io]: https://www.crates.io/crates/musicbrainz_rs_nova
 [MusicBrainz]: https://staticbrainz.org/MB/header-logo-791fb3f.svg
 
-**MusicBrainz rust is a utility crate for the the [MusicBrainz API](https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2).**
+`musicbrainz_rs_nova` is a utility crate for the the [MusicBrainz API](https://musicbrainz.org/doc/Development/XML_Web_Service/Version_2). It provides strongly typed API bindings and
+data fetching using a builder pattern.
 
->This is a fork of [musicbrainz_rs](https://github.com/oknozor/musicbrainz_rs) crate, as it is currently seemingly unmaintained. While this crate is mostly meant as a temporary fix for [another project](https://github.com/RustyNova016/listenbrainz-cli-tools), this crate can be used instead of the original.
+This is a fork of the [musicbrainz_rs](https://github.com/oknozor/musicbrainz_rs) crate, as it is currently seemingly unmaintained.
+
+## Features (for the impatient)
+
+- Fetch requests
+- Browse requests
+- Search request
+- CAA fetching
+- Modular includes
+- Serialization and deserialization to the same schema as the API
+- Blocking and async APIs
+- Rate limiter
+- Custom user agent
+
+### ... and what it doesn't
+
+- Caching
+- Website scrapping for missing APIs
+- Authenticated APIs (Not yet worked on)
+- No std (Create an issue if it's a problem)
+- Listenbrainz (What are you doing here? The party is over at [listenbrainz](https://crates.io/crates/listenbrainz))
+
 
 ---
 
@@ -37,7 +59,7 @@ musicbrainz_rs_nova = { version = "0.5.1", default-features = false, features = 
 
 ## Features
 
-**Note:** All the example below use the `blocking` feature for the sake of conciseness.
+**Note:** All the example below use the `blocking` feature for the sake of conciseness. Translating to async is only a matter of adding `await`s
 
 ### Fetch query
 
