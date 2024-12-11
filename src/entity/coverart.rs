@@ -92,3 +92,22 @@ pub enum ImageType {
     /// Anything which doesn't fit in the types defined above.
     Other,
 }
+
+/// Info about the status of the cover art in musicbrainz
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
+pub struct CoverArtArchive {
+    /// The number of cover art images associated to the release
+    pub count: i32,
+
+    /// Whether the release has any artwork
+    pub artwork: bool,
+
+    /// Whether the release has a front cover
+    pub front: bool,
+
+    /// Whether the release has a back cover
+    pub back: bool,
+
+    /// If the coverart as been taken down by IA (Internet Archive), and thus the release shouldn't have a coverart
+    pub darkened: bool,
+}

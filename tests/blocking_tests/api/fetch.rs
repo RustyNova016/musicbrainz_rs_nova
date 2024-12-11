@@ -186,6 +186,14 @@ fn should_get_release() {
         .id("18d4e9b4-9247-4b44-914a-8ddec3502103")
         .execute();
 
+    let covert_art_archive = CoverArtArchive {
+        artwork: true,
+        back: true,
+        darkened: false,
+        front: true,
+        count: 2,
+    };
+
     assert_eq!(
         in_utero.unwrap(),
         Release {
@@ -214,6 +222,7 @@ fn should_get_release() {
                 language: Some(Language::Eng),
             }),
             asin: None,
+            covert_art_archive
         }
     );
 }

@@ -1,4 +1,5 @@
 use chrono::NaiveDate;
+use musicbrainz_rs_nova::entity::coverart::CoverArtArchive;
 use std::collections::HashMap;
 
 use musicbrainz_rs_nova::entity::area::AreaType::*;
@@ -196,6 +197,14 @@ async fn should_get_release() {
         .execute()
         .await;
 
+    let covert_art_archive = CoverArtArchive {
+        artwork: true,
+        back: true,
+        darkened: false,
+        front: true,
+        count: 2,
+    };
+
     assert_eq!(
         in_utero.unwrap(),
         Release {
@@ -224,6 +233,7 @@ async fn should_get_release() {
                 language: Some(Language::Eng),
             }),
             asin: None,
+            covert_art_archive
         }
     );
 }

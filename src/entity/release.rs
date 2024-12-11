@@ -6,6 +6,7 @@ use super::{Include, Relationship, Subquery};
 use crate::date_format;
 use crate::entity::alias::Alias;
 use crate::entity::artist_credit::ArtistCredit;
+use crate::entity::coverart::CoverArtArchive;
 use crate::entity::discid::Disc;
 use crate::entity::genre::Genre;
 use crate::entity::label::LabelInfo;
@@ -103,6 +104,9 @@ pub struct Release {
 
     /// The text representation on the release.
     pub text_representation: Option<ReleaseTextRepresentation>,
+
+    /// Info about the status of the cover art in musicbrainz
+    pub covert_art_archive: CoverArtArchive,
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Clone)]
