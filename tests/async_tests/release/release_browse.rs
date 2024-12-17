@@ -9,7 +9,7 @@ async fn should_browse_release_by_artist() {
         .execute()
         .await;
 
-    assert!(releases_by_svinkels.is_ok());
+    //assert!(releases_by_svinkels.is_ok());
 
     let releases_by_svinkels = releases_by_svinkels.unwrap();
 

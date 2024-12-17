@@ -74,7 +74,7 @@ pub(crate) use impl_browse_relationships_includes;
 macro_rules! impl_browse_includes_inner {
     ($args:ident, $inc: expr) => {
         pub fn $args(&mut self) -> &mut Self {
-            self.inner.include = self.inner.include($inc).include.to_owned();
+            self.inner.include($inc);
             self
         }
     };

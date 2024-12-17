@@ -45,6 +45,7 @@ legacy_serialize = []
 
 # Alternate default for development
 #default = ["reqwest/default-tls", "blocking"]
+#default = ["reqwest/default-tls", "async"]
 
 [[example]]
 required-features = ["blocking"]
