@@ -43,6 +43,7 @@
 //! [musicbrainz::prelude]: musicbrainz_rs::prelude
 //! [entity]: musicbrainz_rs::entity
 
+use query::Query;
 use serde::de::DeserializeOwned;
 use std::marker::PhantomData;
 
@@ -50,6 +51,9 @@ use crate::config::*;
 
 /// Configure the HTTP client global state
 pub mod config;
+
+/// Configure the HTTP client global state
+pub mod client;
 
 /// The deserializers for the specific Musicbrainz responces
 mod deserialization;
@@ -66,28 +70,17 @@ pub mod query;
 /// Crate errors;
 pub mod error;
 
-/// Utilities for the rate_limiting
-#[cfg(feature = "rate_limit")]
-pub(crate) mod rate_limit;
-
-use crate::entity::api::MusicbrainzResult;
 use crate::entity::search::{SearchResult, Searchable};
+use client::MusicBrainzClient;
+use client::MUSICBRAINZ_CLIENT;
 use deserialization::date_format;
 use entity::Browsable;
 use entity::BrowseResult;
-use entity::Include;
 use entity::{CoverartResolution, CoverartResponse, CoverartTarget, CoverartType};
 use std::fmt::Write as _;
 
 /// Rexports
 pub use crate::error::Error;
-
-#[derive(Clone, Debug)]
-struct Query<T> {
-    path: String,
-    include: Vec<Include>,
-    phantom: PhantomData<T>,
-}
 
 /// perform a lookup of an entity when you have the MBID for that entity
 ///
@@ -216,8 +209,15 @@ pub struct FetchCoverartQuery<T>(CoverartQuery<T>);
 #[derive(Clone, Debug)]
 pub struct BrowseQuery<T> {
     inner: Query<T>,
+
+    /// The number of results to offset the query by
     offset: Option<u16>,
+
+    /// The number of results to query
     limit: Option<u8>,
+
+    /// The search query
+    id: String,
 }
 
 /// Search requests provide a way to search for MusicBrainz entities based on different
@@ -276,14 +276,22 @@ pub struct BrowseQuery<T> {
 #[derive(Clone, Debug)]
 pub struct SearchQuery<T> {
     inner: Query<T>,
+
+    /// The number of results to offset the query by
     offset: Option<u16>,
+
+    /// The number of results to query
     limit: Option<u8>,
+
+    /// The search query in lucene
+    search_query: String,
 }
 
-impl<'a, T> FetchQuery<T>
+impl<T> FetchQuery<T>
 where
     T: Clone,
 {
+    /// The mbid of the entity to fetch
     pub fn id(&mut self, id: &str) -> &mut Self {
         let _ = write!(self.0.path, "/{id}");
         self
@@ -292,45 +300,44 @@ where
     #[cfg(feature = "blocking")]
     pub fn execute(&mut self) -> Result<T, Error>
     where
-        T: Fetch<'a> + DeserializeOwned,
+        T: Fetch + DeserializeOwned,
     {
-        use entity::api::MusicbrainzResult;
+        self.execute_with_client(&MUSICBRAINZ_CLIENT)
+    }
 
-        self.0.path.push_str(FMT_JSON);
-        self.include_to_path();
-        let request = HTTP_CLIENT.get(&self.0.path);
-
-        HTTP_CLIENT
-            .send_with_retries(request)?
-            .json::<MusicbrainzResult<T>>()?
-            .into_result(self.0.path.clone())
+    /// Execute the query with a specific client
+    #[cfg(feature = "blocking")]
+    pub fn execute_with_client(&mut self, client: &client::MusicBrainzClient) -> Result<T, Error>
+    where
+        T: Fetch + DeserializeOwned,
+    {
+        client.get(&self.0.create_url(client))
     }
 
     #[cfg(feature = "async")]
     pub async fn execute(&mut self) -> Result<T, Error>
     where
-        T: Fetch<'a> + DeserializeOwned,
+        T: Fetch + DeserializeOwned,
     {
-        self.0.path.push_str(FMT_JSON);
-        self.include_to_path();
-        let request = HTTP_CLIENT.get(&self.0.path);
-
-        HTTP_CLIENT
-            .send_with_retries(request)
-            .await?
-            .json::<MusicbrainzResult<T>>()
-            .await?
-            .into_result(self.0.path.clone())
+        self.execute_with_client(&MUSICBRAINZ_CLIENT).await
     }
 
-    fn include_to_path(&mut self) {
-        self.0.include_to_path()
+    /// Execute the query with a specific client
+    #[cfg(feature = "async")]
+    pub async fn execute_with_client(
+        &mut self,
+        client: &client::MusicBrainzClient,
+    ) -> Result<T, Error>
+    where
+        T: Fetch + DeserializeOwned,
+    {
+        client.get(&self.0.create_url(client)).await
     }
 }
 
-impl<'a, T> FetchCoverartQuery<T>
+impl<T> FetchCoverartQuery<T>
 where
-    T: Clone + FetchCoverart<'a>,
+    T: Clone + FetchCoverart,
 {
     pub fn id(&mut self, id: &str) -> &mut Self {
         let _ = write!(self.0.path, "/{id}");
@@ -392,9 +399,19 @@ where
 
     #[cfg(feature = "blocking")]
     pub fn execute(&mut self) -> Result<CoverartResponse, Error> {
+        self.execute_with_client(&MUSICBRAINZ_CLIENT)
+    }
+
+    #[cfg(feature = "blocking")]
+    pub fn execute_with_client(
+        &mut self,
+        client: &MusicBrainzClient,
+    ) -> Result<CoverartResponse, Error> {
         self.validate();
-        let request = HTTP_CLIENT.get(&self.0.path);
-        let response = HTTP_CLIENT.send_with_retries(request)?;
+
+        let url = format!("{}/{}", client.coverart_archive_url, &self.0.path);
+
+        let response = client.send_with_retries(client.reqwest_client.get(&url))?;
         let coverart_response = if self.0.target.img_type.is_some() {
             let url = response.url().clone();
             CoverartResponse::Url(url.to_string())
@@ -406,9 +423,21 @@ where
 
     #[cfg(feature = "async")]
     pub async fn execute(&mut self) -> Result<CoverartResponse, Error> {
+        self.execute_with_client(&MUSICBRAINZ_CLIENT).await
+    }
+
+    #[cfg(feature = "async")]
+    pub async fn execute_with_client(
+        &mut self,
+        client: &MusicBrainzClient,
+    ) -> Result<CoverartResponse, Error> {
         self.validate();
-        let request = HTTP_CLIENT.get(&self.0.path);
-        let response = HTTP_CLIENT.send_with_retries(request).await?;
+
+        let url = format!("{}/{}", client.coverart_archive_url, &self.0.path);
+
+        let response = client
+            .send_with_retries(client.reqwest_client.get(&url))
+            .await?;
         let coverart_response = if self.0.target.img_type.is_some() {
             let url = response.url().clone();
             CoverartResponse::Url(url.to_string())
@@ -419,50 +448,64 @@ where
     }
 }
 
-impl<'a, T> BrowseQuery<T>
+impl<T> BrowseQuery<T>
 where
     T: Clone,
 {
     #[cfg(feature = "blocking")]
     pub fn execute(&mut self) -> Result<BrowseResult<T>, Error>
     where
-        T: Fetch<'a> + DeserializeOwned + Browsable,
+        T: Fetch + DeserializeOwned + Browsable,
     {
-        self.include_to_path();
-        let request = HTTP_CLIENT.get(&self.inner.path);
+        self.execute_with_client(&MUSICBRAINZ_CLIENT)
+    }
 
-        HTTP_CLIENT
-            .send_with_retries(request)?
-            .json::<MusicbrainzResult<BrowseResult<T>>>()?
-            .into_result(self.inner.path.clone())
+    /// Execute the query with a specific client
+    #[cfg(feature = "blocking")]
+    pub fn execute_with_client(
+        &mut self,
+        client: &client::MusicBrainzClient,
+    ) -> Result<BrowseResult<T>, Error>
+    where
+        T: Fetch + DeserializeOwned + Browsable,
+    {
+        client.get(&self.create_url(client))
     }
 
     #[cfg(feature = "async")]
     pub async fn execute(&mut self) -> Result<BrowseResult<T>, Error>
     where
-        T: Fetch<'a> + DeserializeOwned + Browsable,
+        T: Fetch + DeserializeOwned + Browsable,
     {
-        self.include_to_path();
-        let request = HTTP_CLIENT.get(&self.inner.path);
-
-        HTTP_CLIENT
-            .send_with_retries(request)
-            .await?
-            .json::<MusicbrainzResult<BrowseResult<T>>>()
-            .await?
-            .into_result(self.inner.path.clone())
+        self.execute_with_client(&MUSICBRAINZ_CLIENT).await
     }
 
-    fn include_to_path(&mut self) {
-        self.inner.include_to_path();
+    /// Execute the query with a specific client
+    #[cfg(feature = "async")]
+    pub async fn execute_with_client(
+        &mut self,
+        client: &client::MusicBrainzClient,
+    ) -> Result<BrowseResult<T>, Error>
+    where
+        T: Fetch + DeserializeOwned + Browsable,
+    {
+        client.get(&self.create_url(client)).await
+    }
+
+    fn create_url(&self, client: &MusicBrainzClient) -> String {
+        let mut url = self.inner.create_url(client);
+        url.push_str(&format!("&{}", self.id));
+
         if let Some(limit) = self.limit {
-            self.inner.path.push_str(PARAM_LIMIT);
-            self.inner.path.push_str(&limit.to_string());
+            url.push_str(PARAM_LIMIT);
+            url.push_str(&limit.to_string());
         }
         if let Some(offset) = self.offset {
-            self.inner.path.push_str(PARAM_OFFSET);
-            self.inner.path.push_str(&offset.to_string());
+            url.push_str(PARAM_OFFSET);
+            url.push_str(&offset.to_string());
         }
+
+        url
     }
 
     pub fn limit(&mut self, limit: u8) -> &mut Self {
@@ -476,52 +519,64 @@ where
     }
 }
 
-impl<'a, T> SearchQuery<T>
+impl<T> SearchQuery<T>
 where
-    T: Search<'a> + Clone,
+    T: Search + Clone,
 {
     #[cfg(feature = "blocking")]
     pub fn execute(&mut self) -> Result<SearchResult<T>, Error>
     where
-        T: Search<'a> + DeserializeOwned + Searchable,
+        T: Search + DeserializeOwned + Searchable,
     {
-        self.include_to_path();
-        let request = HTTP_CLIENT.get(&self.inner.path);
+        self.execute_with_client(&MUSICBRAINZ_CLIENT)
+    }
 
-        HTTP_CLIENT
-            .send_with_retries(request)?
-            .json::<MusicbrainzResult<SearchResult<T>>>()?
-            .into_result(self.inner.path.clone())
+    /// Execute the query with a specific client
+    #[cfg(feature = "blocking")]
+    pub fn execute_with_client(
+        &mut self,
+        client: &client::MusicBrainzClient,
+    ) -> Result<SearchResult<T>, Error>
+    where
+        T: Search + DeserializeOwned + Searchable,
+    {
+        client.get(&self.create_url(client))
     }
 
     #[cfg(feature = "async")]
     pub async fn execute(&mut self) -> Result<SearchResult<T>, Error>
     where
-        T: Search<'a> + DeserializeOwned + Searchable,
+        T: Search + DeserializeOwned + Searchable,
     {
-        self.include_to_path();
-        let request = HTTP_CLIENT.get(&self.inner.path);
-
-        HTTP_CLIENT
-            .send_with_retries(request)
-            .await?
-            .json::<MusicbrainzResult<SearchResult<T>>>()
-            .await?
-            .into_result(self.inner.path.clone())
+        self.execute_with_client(&MUSICBRAINZ_CLIENT).await
     }
 
-    fn include_to_path(&mut self) {
-        self.inner.include_to_path();
+    /// Execute the query with a specific client
+    #[cfg(feature = "async")]
+    pub async fn execute_with_client(
+        &mut self,
+        client: &client::MusicBrainzClient,
+    ) -> Result<SearchResult<T>, Error>
+    where
+        T: Search + DeserializeOwned + Searchable,
+    {
+        client.get(&self.create_url(client)).await
+    }
+
+    fn create_url(&self, client: &MusicBrainzClient) -> String {
+        let mut url = self.inner.create_url(client);
+        url.push_str(&format!("&{}", self.search_query));
 
         if let Some(limit) = self.limit {
-            self.inner.path.push_str(PARAM_LIMIT);
-            self.inner.path.push_str(&limit.to_string());
+            url.push_str(PARAM_LIMIT);
+            url.push_str(&limit.to_string());
+        }
+        if let Some(offset) = self.offset {
+            url.push_str(PARAM_OFFSET);
+            url.push_str(&offset.to_string());
         }
 
-        if let Some(offset) = self.offset {
-            self.inner.path.push_str(PARAM_OFFSET);
-            self.inner.path.push_str(&offset.to_string());
-        }
+        url
     }
 
     /// An integer value defining how many entries should be returned. Only values between 1 and 100 (both inclusive) are allowed. If not given, this defaults to 25.
@@ -537,55 +592,33 @@ where
     }
 }
 
-impl<T> Query<T> {
-    /// Add an include parameter to the query
-    fn include(&mut self, include: Include) -> &mut Self {
-        self.include.push(include);
-        self
-    }
-
-    /// Add the include parameters to the path
-    fn include_to_path(&mut self) {
-        if !self.include.is_empty() {
-            self.path.push_str(PARAM_INC);
-        }
-
-        for inc in self.include.iter() {
-            self.path.push_str(inc.as_str());
-            if Some(inc) != self.include.last() {
-                self.path.push('+');
-            }
-        }
-    }
-}
-
 /// Provide the entity HTTP api path, do not use this trait directly
-pub trait Path<'a> {
+pub trait Path {
     fn path() -> &'static str;
 }
 
 /// Implemented by all fetchable entities (see [`FetchQuery`])
-pub trait Fetch<'a> {
+pub trait Fetch {
     fn fetch() -> FetchQuery<Self>
     where
-        Self: Sized + Path<'a>,
+        Self: Sized + Path,
     {
         FetchQuery(Query {
-            path: format!("{}/{}", BASE_URL, Self::path()),
-            phantom: PhantomData,
+            path: Self::path().to_string(),
+            result_type: PhantomData,
             include: vec![],
         })
     }
 }
 
 /// Implemented by all fetchable coverart entities (see [`FetchCoverartQuery`])
-pub trait FetchCoverart<'a> {
+pub trait FetchCoverart {
     fn fetch_coverart() -> FetchCoverartQuery<Self>
     where
-        Self: Sized + Path<'a>,
+        Self: Sized + Path,
     {
         FetchCoverartQuery(CoverartQuery {
-            path: format!("{}/{}", BASE_COVERART_URL, Self::path()),
+            path: Self::path().to_string(),
             phantom: PhantomData,
             target: CoverartTarget {
                 img_type: None,
@@ -596,11 +629,11 @@ pub trait FetchCoverart<'a> {
 
     fn get_coverart(&self) -> FetchCoverartQuery<Self>
     where
-        Self: Sized + Path<'a>,
+        Self: Sized + Path,
         Self: Clone,
     {
         FetchCoverartQuery(CoverartQuery {
-            path: format!("{}/{}", BASE_COVERART_URL, Self::path()),
+            path: Self::path().to_string(),
             phantom: PhantomData,
             target: CoverartTarget {
                 img_type: None,
@@ -611,35 +644,37 @@ pub trait FetchCoverart<'a> {
 }
 
 /// Implemented by all browsable entities (see [`BrowseQuery`])
-pub trait Browse<'a> {
+pub trait Browse {
     fn browse() -> BrowseQuery<Self>
     where
-        Self: Sized + Path<'a>,
+        Self: Sized + Path,
     {
         BrowseQuery {
             inner: Query {
-                path: format!("{}/{}", BASE_URL, Self::path()),
-                phantom: PhantomData,
+                path: Self::path().to_string(),
+                result_type: PhantomData,
                 include: vec![],
             },
             limit: None,
             offset: None,
+            id: String::new(),
         }
     }
 }
 
 /// Implemented by all searchable entities (see [`SearchQuery`])
-pub trait Search<'a> {
+pub trait Search {
     fn search(query: String) -> SearchQuery<Self>
     where
-        Self: Sized + Path<'a>,
+        Self: Sized + Path,
     {
         SearchQuery {
             inner: Query {
-                path: format!("{}/{}{}&{}", BASE_URL, Self::path(), FMT_JSON, query),
-                phantom: PhantomData,
+                path: Self::path().to_string(),
+                result_type: PhantomData,
                 include: vec![],
             },
+            search_query: query,
             limit: None,
             offset: None,
         }
